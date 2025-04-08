@@ -32,3 +32,4 @@ public class BoardEntity {
     private String boardImage;
 
 }
+
