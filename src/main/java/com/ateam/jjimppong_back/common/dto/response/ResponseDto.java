@@ -1,0 +1,66 @@
+package com.ateam.jjimppong_back.common.dto.response;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+// access를 private로 설정
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
+public class ResponseDto {
+    private String code;
+    private String message;
+
+    // 응답 코드, 메세지 작성
+    public ResponseDto(){ 
+        this.code = ResponseCode.SUCCESS;
+        this.message = ResponseMessage.SUCCESS;
+    }
+
+    // HTTP 응답 반환 메서드
+    public static ResponseEntity<ResponseDto> success(HttpStatus status) {
+        ResponseDto body = new ResponseDto();
+        
+        return ResponseEntity.status(status).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> validationFail() {
+        ResponseDto body = new ResponseDto(ResponseCode.VALIDATION_FAIL, ResponseMessage.VALIDATION_FAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> signInFail() {
+        ResponseDto body = new ResponseDto(ResponseCode.SIGN_IN_FAIL,
+        ResponseMessage.SIGN_IN_FAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> existUser() {
+        ResponseDto body = new ResponseDto(ResponseCode.EXIST_USER, ResponseMessage.EXIST_USER);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> databaseError() {
+        ResponseDto body = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> duplicatiedEmail() {
+        ResponseDto body = new ResponseDto(ResponseCode.DUPLICATIED_EMAIL, ResponseMessage.DUPLICATIED_EMAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> mailFail() {
+        ResponseDto body = new ResponseDto(ResponseCode.MAIL_FAIL, ResponseMessage.MAIL_FAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> authFail() {
+        ResponseDto body = new ResponseDto(ResponseCode.AUTH_FAIL, ResponseMessage.AUTH_FAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+}
