@@ -46,6 +46,10 @@ public class WebSecurityConfig {
             .csrf(CsrfConfigurer::disable)
             // description: CORS 정책 설정 //
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/v1/auth", "/api/v1/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
             // description: Jwt Authentication Filter 등록 //
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
