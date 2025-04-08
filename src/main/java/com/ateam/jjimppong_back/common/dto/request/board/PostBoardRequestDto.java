@@ -1,3 +1,35 @@
+package com.ateam.jjimppong_back.common.dto.request.board;
+
+import java.util.List;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostBoardRequestDto {
-  
+  @NotNull
+  private Integer boardNumber;
+  @NotBlank
+  private String boardAddressCategory;
+  @NotNull
+  private List<String> boardDetailCategory;
+  @NotBlank
+  private String boardTitle;
+  @NotBlank
+  private String boardContent;
+  private String boardAddress;
+  @NotBlank
+  private String boardWriteDate;
+  @NotNull
+  private Integer boardViewCount;
+  @NotNull
+  private Integer boardScore;
+  private String boardImage;
 }
