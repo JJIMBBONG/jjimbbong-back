@@ -18,5 +18,6 @@ public class GoodEntity {
     
     @Id
     private String userId;
+    @Id
     private Integer boardNumber;
 }
