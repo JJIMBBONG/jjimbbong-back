@@ -1,5 +1,6 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
