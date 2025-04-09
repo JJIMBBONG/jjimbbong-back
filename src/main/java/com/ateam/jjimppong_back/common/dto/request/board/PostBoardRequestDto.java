@@ -14,22 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostBoardRequestDto {
-  @NotNull
-  private Integer boardNumber;
   @NotBlank
   private String boardAddressCategory;
   @NotNull
-  private List<String> boardDetailCategory;
+  private String boardDetailCategory;
   @NotBlank
   private String boardTitle;
   @NotBlank
   private String boardContent;
   private String boardAddress;
-  @NotBlank
-  private String boardWriteDate;
-  @NotNull
-  private Integer boardViewCount;
-  @NotNull
-  private Integer boardScore;
   private String boardImage;
 }
