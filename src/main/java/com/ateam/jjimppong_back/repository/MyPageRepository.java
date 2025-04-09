@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.ateam.jjimppong_back.common.entity.MyPageEntity;
 
 @Repository
-public interface MyPageRepositoty extends JpaRepository<MyPageEntity, String> {
+public interface MyPageRepository extends JpaRepository<MyPageEntity, String> {
   
+  
+
 }

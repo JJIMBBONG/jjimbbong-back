@@ -21,4 +21,5 @@ public class MyPageEntity {
   private Integer boardNumber;
   private Integer userLevel;
   private Integer userScore;
+
 }
