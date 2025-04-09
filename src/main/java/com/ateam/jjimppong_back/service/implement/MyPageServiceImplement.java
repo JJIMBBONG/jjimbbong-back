@@ -6,9 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ateam.jjimppong_back.common.dto.request.PasswordReCheckRequestDto;
-import com.ateam.jjimppong_back.common.dto.response.GetSignInUserResponseDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.repository.MyPageRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;

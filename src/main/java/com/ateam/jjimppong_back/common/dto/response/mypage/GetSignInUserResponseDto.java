@@ -1,8 +1,9 @@
-package com.ateam.jjimppong_back.common.dto.response;
+package com.ateam.jjimppong_back.common.dto.response.mypage;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 
 import lombok.Getter;

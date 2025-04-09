@@ -2,9 +2,9 @@ package com.ateam.jjimppong_back.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.ateam.jjimppong_back.common.dto.request.PasswordReCheckRequestDto;
-import com.ateam.jjimppong_back.common.dto.response.GetSignInUserResponseDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
 
 public interface MyPageService {
   ResponseEntity<ResponseDto> passwordReCheck(PasswordReCheckRequestDto dto, String userId);
