@@ -1,5 +1,7 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity {
-    
+
     @Id
     @Column(name = "user_id")
     private String userId;
@@ -49,5 +51,20 @@ public class UserEntity {
 
     @Column(name = "sns_id")
     private String snsId;
+
+    public UserEntity(SignUpRequestDto dto){ 
+        this.userId = dto.getUserId();
+        this.userNickname = dto.getUserNickname();
+        this.userEmail = dto.getUserEmail();
+        this.name = dto.getName();
+        this.userPassword = dto.getUserPassword();
+        this.address = dto.getAddress();
+        this.detailAddress = dto.getDetailAddress();
+        this.profileImage = dto.getProfileImage();
+        this.gender = dto.getGender();
+        this.userLevel = Integer.parseInt(dto.getUserLevel());
+        this.joinType = dto.getJoinType();
+
+    }
 
 }

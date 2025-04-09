@@ -2,6 +2,8 @@ package com.ateam.jjimppong_back.service.implement;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthCheckRequestDto;
@@ -10,6 +12,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
 
@@ -20,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceImplement implements AuthService{
 
     private final UserRepository userRepository;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
@@ -85,6 +89,21 @@ public class AuthServiceImplement implements AuthService{
             String userId = dto.getUserId();
             boolean existUser = userRepository.existsByUserId(userId);
             if(existUser) return ResponseDto.existUser();
+
+            String userNickname = dto.getUserNickname();
+            boolean existNickname = userRepository.existsByUserNickname(userNickname);
+            if(existNickname) return ResponseDto.existUser();
+
+            String userEmail = dto.getUserEmail();
+            boolean existEmail = userRepository.existsByUserEmail(userEmail);
+            if(existEmail) return ResponseDto.existUser();
+
+            String userPassword = dto.getUserPassword();
+            // 암호화한 비밀번호
+            String encodedPassword = passwordEncoder.encode(userPassword);
+            dto.setUserPassword(encodedPassword);
+            UserEntity userEntity = new UserEntity(dto);
+            userRepository.save(userEntity);
 
         } catch (Exception exception){ 
             exception.printStackTrace();
