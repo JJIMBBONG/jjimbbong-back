@@ -8,6 +8,8 @@ import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,11 +21,12 @@ import lombok.Setter;
 @Table(name = "board")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BoardEntity {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer boardNumber;
     private String userId;
     private String userNickname;
@@ -61,4 +64,5 @@ public class BoardEntity {
         this.boardTitle = dto.getBoardTitle();
         this.boardContent = dto.getBoardContent();
     }
+
 }

@@ -10,19 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "comment")
-@Table(name = "comment")
+@Entity(name = "localFestival")
+@Table(name = "local_festival")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentEntity {
+public class LocalFestivalEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer commentNumber;
-  private String userId;
-  private Integer boardNumber;
-  private String commentContent;
-  private Integer userLevel;
-  private String writeDate;
+  private Integer festivalNumber;
+  private String festivalDate;
+  private String festivalName;
+  private String festivalContent;
+  private String festivalImage;
 }

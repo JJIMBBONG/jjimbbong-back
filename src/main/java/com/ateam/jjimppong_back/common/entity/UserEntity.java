@@ -12,23 +12,20 @@ import lombok.Setter;
 @Table(name = "user")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
-    
-    @Id
-    private String userId;
-
-    private String userNickname;
-    private String userPassword;
-    private String userEmail;
-    private String joinType;
-    private String name;
-    private String address;
-    private String detailAddress;
-    private Integer userLevel;
-    private String gender;
-    private String profileImage;
-    private String snsId;
-
+  @Id
+  private String userId;
+  private String userNickname;
+  private String userPassword;
+  private String userEmail;
+  private String joinType;
+  private String name;
+  private String address;
+  private String detailAddress;
+  private Integer userLevel;
+  private String gender;
+  private String profileImage;
+  private String snsId;
 }
