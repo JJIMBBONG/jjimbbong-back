@@ -21,8 +21,8 @@ import lombok.Setter;
 @Table(name = "board")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BoardEntity {
     
     @Id
@@ -64,4 +64,5 @@ public class BoardEntity {
         this.boardTitle = dto.getBoardTitle();
         this.boardContent = dto.getBoardContent();
     }
+
 }

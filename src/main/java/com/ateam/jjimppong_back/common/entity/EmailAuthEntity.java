@@ -9,16 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "emailAuth")
-@Table(name = "emailAuth")
+@Table(name = "email_auth")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class EmailAuthEntity {
-
-    @Id
-    private String userEmail;
-
-    private String aurhNumber;
-    
+  @Id
+  private String userEmail;
+  private String authNumber;
 }
