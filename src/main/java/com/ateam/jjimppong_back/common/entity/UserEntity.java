@@ -28,4 +28,5 @@ public class UserEntity {
   private String gender;
   private String profileImage;
   private String snsId;
+
 }
