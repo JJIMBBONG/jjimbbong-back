@@ -4,7 +4,6 @@ public interface ResponseMessage {
   String SUCCESS = "Success.";
 
   String VALIDATION_FAIL = "Validation Fail.";
-
   String EXIST_USER = "Exist User.";
   String DUPLICATED_EMAIL = "Duplicated Email";
   String NO_EXIST_BOARD = "No Exist Board.";
@@ -15,5 +14,4 @@ public interface ResponseMessage {
 
   String MAIL_SEND_FAILED = "Mail send Failed";
   String DATABASE_ERROR = "Database Error";
-
 }
