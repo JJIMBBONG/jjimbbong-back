@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ateam.jjimppong_back.common.dto.request.auth.EmailCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -35,6 +36,14 @@ public class AuthController {
         @RequestBody @Valid NicknameCheckRequestDto requestBody
     ){ 
         ResponseEntity<ResponseDto> response = authService.nicknameCheck(requestBody);
+        return response;
+    }
+
+    @PostMapping("/email-check")
+    public ResponseEntity<ResponseDto> emailCheck( 
+        @RequestBody @Valid EmailCheckRequestDto requestBody
+    ){ 
+        ResponseEntity<ResponseDto> response = authService.emailCheck(requestBody);
         return response;
     }
     

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ateam.jjimppong_back.common.dto.request.auth.EmailCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -43,10 +44,27 @@ public class AuthServiceImplement implements AuthService{
             boolean existNickname = userRepository.existsByUserNickname(userNickname);
             if(existNickname) return ResponseDto.existUser();
   
-          } catch(Exception exception){ 
+        } catch(Exception exception){ 
               exception.printStackTrace();
               return ResponseDto.databaseError();
-          }
+        }
+
+        return ResponseDto.success(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> emailCheck(EmailCheckRequestDto dto) {
+
+        try{
+            String userEmail = dto.getUserEmail();
+            boolean existEmail = userRepository.existsByUserNickname(userEmail);
+            if(existEmail) return ResponseDto.existUser();
+  
+        } catch(Exception exception){ 
+              exception.printStackTrace();
+              return ResponseDto.databaseError();
+        }
+
 
         return ResponseDto.success(HttpStatus.OK);
     }
