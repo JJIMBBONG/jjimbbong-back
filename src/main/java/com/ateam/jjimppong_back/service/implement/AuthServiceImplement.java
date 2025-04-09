@@ -54,16 +54,19 @@ public class AuthServiceImplement implements AuthService{
 
     @Override
     public ResponseEntity<ResponseDto> emailAuth(EmailAuthRequestDto dto) {
+
         try{
             String userEmail = dto.getUserEmail();
-            boolean existEmail = userRepository.existsByUserNickname(userEmail);
+            boolean existEmail = userRepository.existsByUserEmail(userEmail);
             if(existEmail) return ResponseDto.existUser();
   
-        } catch(Exception exception){ 
+          } catch(Exception exception){ 
               exception.printStackTrace();
               return ResponseDto.databaseError();
-        }
+          }
 
         return ResponseDto.success(HttpStatus.OK);
+
     }
+
 }

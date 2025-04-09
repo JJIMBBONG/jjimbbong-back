@@ -46,5 +46,4 @@ public class AuthController {
         ResponseEntity<ResponseDto> response = authService.emailAuth(requestBody);
         return response;
     }
-    
 }
