@@ -1,5 +1,6 @@
 package com.ateam.jjimppong_back.common.dto.request.auth;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailCheckRequestDto {
+public class EmailAuthRequestDto {
 
     @NotBlank
+    @Email
     private String userEmail;
     
 }

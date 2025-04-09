@@ -32,6 +32,7 @@ public class UserEntity {
 
     @Column(name = "join_type")
     private String joinType;
+
     private String name;
     private String address;
 
