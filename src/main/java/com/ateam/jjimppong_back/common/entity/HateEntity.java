@@ -1,5 +1,6 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,6 +18,9 @@ import lombok.Setter;
 public class HateEntity {
     
     @Id
+    @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "board_number")
     private Integer boardNumber;
 }

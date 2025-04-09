@@ -1,5 +1,6 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,8 +18,10 @@ import lombok.Setter;
 public class EmailAuthEntity {
 
     @Id
+    @Column(name = "user_email")
     private String userEmail;
 
-    private String aurhNumber;
+    @Column(name = "auth_number")
+    private String authNumber;
     
 }

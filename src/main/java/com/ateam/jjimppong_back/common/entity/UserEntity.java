@@ -34,10 +34,19 @@ public class UserEntity {
     private String joinType;
     private String name;
     private String address;
+
+    @Column(name = "detail_address")
     private String detailAddress;
+
+    @Column(name = "user_level")
     private Integer userLevel;
+
     private String gender;
+
+    @Column(name = "profile_image")
     private String profileImage;
+
+    @Column(name = "sns_id")
     private String snsId;
 
 }
