@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
@@ -30,6 +31,22 @@ public class AuthServiceImplement implements AuthService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
+        return ResponseDto.success(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> nicknameCheck(NicknameCheckRequestDto dto) {
+
+        try{
+            String userNickname = dto.getUserNickname();
+            boolean existNickname = userRepository.existsByUserNickname(userNickname);
+            if(existNickname) return ResponseDto.existUser();
+  
+          } catch(Exception exception){ 
+              exception.printStackTrace();
+              return ResponseDto.databaseError();
+          }
 
         return ResponseDto.success(HttpStatus.OK);
     }

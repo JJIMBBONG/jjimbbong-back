@@ -12,7 +12,7 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 @RestControllerAdvice
 public class CustomExceptionHandler {
     
-        // description: MethodArgumentNotValidException - 유효성 검사 실패시 예외
+    // description: MethodArgumentNotValidException - 유효성 검사 실패시 예외
     // description: HttpMessageNotReadableException- RequestBody가 필요한데 존재하지 않을때
     @ExceptionHandler({
         MethodArgumentNotValidException.class,
