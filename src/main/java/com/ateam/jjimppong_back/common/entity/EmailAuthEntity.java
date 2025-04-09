@@ -8,17 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "myPage")
-@Table(name = "my_page")
+@Entity(name = "emailAuth")
+@Table(name = "email_auth")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPageEntity {
+public class EmailAuthEntity {
   @Id
-  private String userId;
-  private String userNickname;
-  private Integer boardNumber;
-  private Integer userLevel;
-  private Integer userScore;
+  private String userEmail;
+  private String authNumber;
 }

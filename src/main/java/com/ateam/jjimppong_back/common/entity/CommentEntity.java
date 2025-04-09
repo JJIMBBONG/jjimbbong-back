@@ -1,6 +1,8 @@
 package com.ateam.jjimppong_back.common.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -8,17 +10,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "myPage")
-@Table(name = "my_page")
+@Entity(name = "comment")
+@Table(name = "comment")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPageEntity {
+public class CommentEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer commentNumber;
   private String userId;
-  private String userNickname;
   private Integer boardNumber;
+  private String commentContent;
   private Integer userLevel;
-  private Integer userScore;
+  private String writeDate;
 }

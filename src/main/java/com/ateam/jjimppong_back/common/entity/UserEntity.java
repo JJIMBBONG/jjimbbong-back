@@ -8,17 +8,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "myPage")
-@Table(name = "my_page")
+@Entity(name = "user")
+@Table(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPageEntity {
+public class UserEntity {
   @Id
   private String userId;
   private String userNickname;
-  private Integer boardNumber;
+  private String userPassword;
+  private String userEmail;
+  private String joinType;
+  private String name;
+  private String address;
+  private String detailAddress;
   private Integer userLevel;
-  private Integer userScore;
+  private String gender;
+  private String profileImage;
+  private String snsId;
 }
