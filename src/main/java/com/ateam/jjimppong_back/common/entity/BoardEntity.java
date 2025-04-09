@@ -1,8 +1,8 @@
 package com.ateam.jjimppong_back.common.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
@@ -41,16 +41,16 @@ public class BoardEntity {
     private String boardAddress;
     private String boardImage;
 
-    public BoardEntity(PostBoardRequestDto dto, String userNickname) {
+    public BoardEntity(PostBoardRequestDto dto, String userNickname, String userId) {
         LocalDate now = LocalDate.now();
-        DateTimeFormatter DateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-DD")
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
         this.userId = userId;
         this.userNickname = userNickname;
         this.boardContent = dto.getBoardContent();
         this.boardTitle = dto.getBoardTitle();
         this.boardAddressCategory = dto.getBoardAddressCategory();
         this.boardDetailCategory = dto.getBoardDetailCategory();
-        this.boardWriteDate = LocalDate.now();
+        this.boardWriteDate = now.format(dateTimeFormatter);
         this.boardViewCount = 0;
         this.boardScore = 0;
         this.boardAddress = dto.getBoardAddress();

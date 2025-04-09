@@ -19,7 +19,7 @@ public class PatchBoardRequestDto {
   @NotBlank
   private String boardAddressCategory;
   @NotNull
-  private List<String> boardDetailCategory;
+  private String boardDetailCategory;
   @NotBlank
   private String boardTitle;
   @NotBlank
