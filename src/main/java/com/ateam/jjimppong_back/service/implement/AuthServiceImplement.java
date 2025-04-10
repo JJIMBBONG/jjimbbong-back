@@ -20,6 +20,7 @@ import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
 
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 
 import com.ateam.jjimppong_back.provider.JwtProvider;
 import com.ateam.jjimppong_back.provider.MailProvider;
@@ -127,9 +128,22 @@ public class AuthServiceImplement implements AuthService{
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
         
         try{
+            // 이메일 인증 확인
+            EmailAuthCheckRequestDto emailAuthCheckRequestDto = new EmailAuthCheckRequestDto();
+            emailAuthCheckRequestDto.setUserEmail(dto.getUserEmail());
+            emailAuthCheckRequestDto.setAuthNumber(dto.getAuthNumber());  // 인증번호는 사용자가 제공한 인증번호
+
+            // 이메일 인증 확인 메서드 호출
+            ResponseEntity<ResponseDto> emailAuthResponse = emailAuthCheck(emailAuthCheckRequestDto);
+
+            // 이메일 인증 실패 시 처리
+            if (emailAuthResponse.getStatusCode() != HttpStatus.OK) {
+            return emailAuthResponse;  // 이메일 인증 실패 응답을 그대로 반환
+            }
 
             String userId = dto.getUserId();
             boolean existUser = userRepository.existsByUserId(userId);
