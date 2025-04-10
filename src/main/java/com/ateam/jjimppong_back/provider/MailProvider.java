@@ -42,7 +42,7 @@ public class MailProvider {
         // 메시지 수신자 메일 지정
         mimeMessage.setRecipient(RecipientType.TO, new InternetAddress(to));
         // 메시지 제목 지정
-        mimeMessage.setSubject("estate 인증 번호");
+        mimeMessage.setSubject("찜뽕 인증 번호");
         // 메시지 내용 지정
         mimeMessage.setText(getText(authNumber), "utf-8", "html");
         // 메시지 전송
@@ -51,11 +51,13 @@ public class MailProvider {
     }
 
     private String getText (String authNumber) {
-        String text = 
-            "<h2 style='text-align: center;'>estate 인증 번호</h2>" +
-            "<p>요청하신 email 인증 번호는 <strong style='color: red;'>" + 
-            authNumber +
-            "</strong>입니다.</p>";
+        String text =
+        "<h2 style='text-align: center;'>찜뽕 인증 번호</h2>" +
+        "<p style='text-align: center;'>찜뽕에 오신것을 환영합니다!<p>" +
+        "<p style='text-align: center;'>요청하신 이메일 인증 번호는 <strong style='color: red;'>" + 
+        authNumber +
+        "</strong>입니다.</p>" + 
+        "<img src='https://postfiles.pstatic.net/MjAyNTA0MTBfNjIg/MDAxNzQ0MjQ4NTczMDE1.keJ3cgKz7FLDbLyBuNzw6riewv3ysHGJ_9z4czxHkzMg.-JhfAakkeejP_aaeTjjHQ8PqCS7VlyB4y0wX3L2DAswg.PNG/jjimbbong.png?type=w773' alt='찜뽕 이미지' style='display: block; margin-left: auto; margin-right: auto;'/>";
         return text;
     }
 }

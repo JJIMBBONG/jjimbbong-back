@@ -8,6 +8,6 @@ import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 @Repository
 public interface EmailAuthNumberRepository extends JpaRepository<EmailAuthEntity, String> {
     
-    boolean existsByEmailAndAuthNumber(String userEmail, String authNumber);
+    boolean existsByUserEmailAndAuthNumber(String userEmail, String authNumber);
 
 }

@@ -116,7 +116,7 @@ public class AuthServiceImplement implements AuthService{
             String authNumber = dto.getAuthNumber();
 
             // 이메일과 인증번호 확인
-            boolean isMatched = emailAuthNumberRepository.existsByEmailAndAuthNumber(userEmail, authNumber);
+            boolean isMatched = emailAuthNumberRepository.existsByUserEmailAndAuthNumber(userEmail, authNumber);
             // 만일 이메일과 인증번호가 일치하지 않는다면 'AF' 인증실패
             if (!isMatched) return ResponseDto.authFail();
         } catch (Exception exception) {
