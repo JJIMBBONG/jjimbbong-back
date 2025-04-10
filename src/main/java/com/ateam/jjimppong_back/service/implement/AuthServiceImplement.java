@@ -10,8 +10,10 @@ import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthCheckRequestDto
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.util.EmailAuthNumberUtil;
@@ -37,8 +39,8 @@ public class AuthServiceImplement implements AuthService{
     private final EmailAuthNumberRepository emailAuthNumberRepository;
     // 메일 전송
     private final MailProvider mailProvider;
-    // // Jwt키 생성 및 검증
-    // private final JwtProvider jwtProvider;
+    // Jwt키 생성 및 검증
+    private final JwtProvider jwtProvider;
     // 비밀번호 암호화
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -173,4 +175,30 @@ public class AuthServiceImplement implements AuthService{
 
     }
 
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+    
+        String accessToken = null;
+
+        try {
+
+            String userId = dto.getUserId();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return ResponseDto.signInFail();
+
+            String userPassword = dto.getUserPassword();
+            String encodedPassword = userEntity.getUserPassword();
+            boolean isMatch = passwordEncoder.matches(userPassword, encodedPassword);
+            if (!isMatch) return ResponseDto.signInFail();
+
+            accessToken = jwtProvider.create(userId);
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(accessToken);
+
+    }
 }
