@@ -25,6 +25,7 @@ public class EmailAuthNumberUtil {
         return new String(authChar);
     }
 
+
     // -A~Z, 0~9의 4자리 임의의 문자열
     public static String createCodeNumber() {
         char[] authChar = new char[4];
@@ -38,5 +39,4 @@ public class EmailAuthNumberUtil {
         
         return new String(authChar);
     }
-
 }
