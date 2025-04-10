@@ -123,7 +123,7 @@ public class AuthServiceImplement implements AuthService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return ResponseDto.success();
+        return ResponseDto.success(HttpStatus.OK);
     }
 
     @Override

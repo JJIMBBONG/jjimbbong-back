@@ -63,9 +63,4 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
-    public static ResponseEntity<ResponseDto> success() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'success'");
-    }
-
 }
