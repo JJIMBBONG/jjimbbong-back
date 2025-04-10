@@ -8,7 +8,7 @@ import com.ateam.jjimppong_back.common.entity.BoardEntity;
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
   
-  boolean existByBoardNumber(Integer boardNumber);
+  boolean existsByBoardNumber(Integer boardNumber);
 
     BoardEntity findByBoardNumber(Integer boardNumber);
 
