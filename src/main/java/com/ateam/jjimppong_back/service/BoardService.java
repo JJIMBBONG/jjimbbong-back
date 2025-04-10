@@ -4,8 +4,10 @@ import org.springframework.http.ResponseEntity;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 
 public interface BoardService {
@@ -15,4 +17,6 @@ public interface BoardService {
   ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String userId);
   ResponseEntity<ResponseDto> deleteBoard(Integer boardNumber, String userId);
 
+  ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber);
+  ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String userId);
 }
