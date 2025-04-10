@@ -7,6 +7,6 @@ public interface ResponseMessage {
     String EXIST_USER = "Exist User.";
     String DATABASE_ERROR  = "Database Error.";
     String DUPLICATIED_EMAIL = "Duplicatied Email";
-    String MAIL_FAIL = "Mail Fail";
+    String MAIL_SEND_FAIL = "Mail send Fail";
     String AUTH_FAIL = "Auth Fail";
 }

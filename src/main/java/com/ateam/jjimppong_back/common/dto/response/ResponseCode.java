@@ -7,6 +7,6 @@ public interface ResponseCode {
     String EXIST_USER = "EU";
     String DATABASE_ERROR  = "DBE";
     String DUPLICATIED_EMAIL = "DE";
-    String MAIL_FAIL = "MF";
+    String MAIL_SEND_FAIL = "MF";
     String AUTH_FAIL = "AF";
 }

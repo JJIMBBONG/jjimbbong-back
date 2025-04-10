@@ -53,14 +53,19 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
-    public static ResponseEntity<ResponseDto> mailFail() {
-        ResponseDto body = new ResponseDto(ResponseCode.MAIL_FAIL, ResponseMessage.MAIL_FAIL);
+    public static ResponseEntity<ResponseDto> mailSendFail() {
+        ResponseDto body = new ResponseDto(ResponseCode.MAIL_SEND_FAIL, ResponseMessage.MAIL_SEND_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     public static ResponseEntity<ResponseDto> authFail() {
         ResponseDto body = new ResponseDto(ResponseCode.AUTH_FAIL, ResponseMessage.AUTH_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> success() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'success'");
     }
 
 }
