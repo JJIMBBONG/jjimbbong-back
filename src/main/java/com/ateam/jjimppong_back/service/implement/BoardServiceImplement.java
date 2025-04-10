@@ -9,11 +9,15 @@ import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
+import com.ateam.jjimppong_back.common.entity.CommentEntity;
 import com.ateam.jjimppong_back.repository.BoardRepository;
+import com.ateam.jjimppong_back.repository.CommentRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImplement implements BoardService {
 
   private final BoardRepository boardRepository;
+  private final CommentRepository commentRepository; 
 
   @Override
   public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname) {
@@ -44,9 +49,11 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId) {
     
-    List<BoardEntity> boardEntities = new ArrayList<>();
+    List<BoardEntity> boardEntities;
 
     try {
+
+      boardEntities = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
       
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -120,5 +127,25 @@ public class BoardServiceImplement implements BoardService {
       return ResponseDto.databaseError();
     }
   }
+
+  @Override
+  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber) {
+    
+    List<CommentEntity> commentEntities = new ArrayList<>();
+
+    try {
+
+      commentEntities = commentRepository.findByBoardNumberOrderByWriteDateDesc(boardNumber);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetCommentResponseDto.success(commentEntities);
+
+  }
+
+  
   
 }
