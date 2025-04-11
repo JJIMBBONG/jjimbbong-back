@@ -9,6 +9,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdSearchRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -80,6 +81,14 @@ public class AuthController {
         @RequestBody @Valid IdSearchRequestDto requestBody
     ){ 
         ResponseEntity<ResponseDto> response = authService.idSearch(requestBody);
+        return response;
+    }
+
+    @PostMapping("/password-reset")
+    ResponseEntity<ResponseDto> passwordReset( 
+        @RequestBody @Valid PasswordResetRequestDto requestBody
+    ){ 
+        ResponseEntity<ResponseDto> response = authService.passwordReset(requestBody);
         return response;
     }
     

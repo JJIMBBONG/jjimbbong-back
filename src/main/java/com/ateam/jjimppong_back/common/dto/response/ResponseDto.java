@@ -14,7 +14,7 @@ public class ResponseDto {
     private String code;
     private String message;
 
-    // 일반 응답용 생성자
+    // 생성자
     public ResponseDto() {
         this.code = ResponseCode.SUCCESS;
         this.message = ResponseMessage.SUCCESS;

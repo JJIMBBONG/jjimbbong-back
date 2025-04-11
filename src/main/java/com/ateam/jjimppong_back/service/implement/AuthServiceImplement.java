@@ -11,6 +11,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdSearchRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -18,6 +19,7 @@ import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.util.EmailAuthNumberUtil;
+import com.ateam.jjimppong_back.common.util.TemporaryPasswordUtil;
 import com.ateam.jjimppong_back.repository.EmailAuthNumberRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
@@ -26,6 +28,7 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 
 import com.ateam.jjimppong_back.provider.JwtProvider;
+import com.ateam.jjimppong_back.provider.MailPasswordResetProvider;
 import com.ateam.jjimppong_back.provider.MailProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -155,6 +158,41 @@ public class AuthServiceImplement implements AuthService{
             return ResponseDto.databaseError();
         }
     }
+
+    // @Override
+    // public ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto) {
+    //     try {
+    //         String userId = dto.getUserId();
+    //         String userEmail = dto.getUserEmail();
+    //         String authNumber = dto.getAuthNumber();
+
+    //         // 이메일과 인증번호가 일치하는지 확인
+    //         boolean isMatched = emailAuthNumberRepository.existsByUserEmailAndAuthNumber(userEmail, authNumber);
+    //         if (!isMatched) {
+    //             return ResponseDto.authFail(); // 인증번호 불일치
+    //         }
+
+    //         // 사용자 ID와 이메일로 사용자 정보 찾기
+    //         UserEntity userEntity = userRepository.findByUserIdAndUserEmail(userId, userEmail);
+
+    //         // 임시 비밀번호 생성
+    //         String temporaryPassword = TemporaryPasswordUtil.createCodeNumber();
+
+    //         // 비밀번호 암호화 (Spring Security 사용 시)
+    //         String encodedPassword = passwordEncoder.encode(temporaryPassword);
+    //         userEntity.setUserPassword(encodedPassword);
+
+    //         // DB 업데이트
+    //         userRepository.save(userEntity);
+
+    //         // // 이메일 전송 (임시 비밀번호 포함)
+    //         // MailPasswordResetProvider.mailAuthSend(userEmail, temporaryPassword);
+
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return ResponseDto.databaseError();
+    //     }
+    // }
 
     @Override
     @Transactional
