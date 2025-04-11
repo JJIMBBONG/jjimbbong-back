@@ -7,11 +7,13 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 
 public interface BoardService {
   ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname);
   ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId);
   ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
+  ResponseEntity<? super GetRecommandBoardResponseDto> getRecommandBoard();
   ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String userId);
   ResponseEntity<ResponseDto> deleteBoard(Integer boardNumber, String userId);
 

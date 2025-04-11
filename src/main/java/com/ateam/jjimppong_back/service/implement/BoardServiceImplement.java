@@ -12,6 +12,7 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.repository.BoardRepository;
 import com.ateam.jjimppong_back.service.BoardService;
@@ -76,6 +77,24 @@ public class BoardServiceImplement implements BoardService {
 
   }
 
+  // 추천 게시물 목록 가져오기 //
+  @Override
+  public ResponseEntity<? super GetRecommandBoardResponseDto> getRecommandBoard() {
+    List<BoardEntity> boardEntities = new ArrayList<>();
+
+    try {
+
+      boardEntities = boardRepository.findByOrderByBoardScoreDesc();
+      if( boardEntities == null ) return ResponseDto.noExistBoard();
+
+    } catch(Exception exception){
+      exception.printStackTrace();;
+      return ResponseDto.databaseError();
+    }
+
+    return GetRecommandBoardResponseDto.success(boardEntities);
+  }
+
   @Override
   public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String userId) {
     
@@ -120,5 +139,7 @@ public class BoardServiceImplement implements BoardService {
       return ResponseDto.databaseError();
     }
   }
+
+  
   
 }
