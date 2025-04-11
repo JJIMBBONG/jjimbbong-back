@@ -1,5 +1,7 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -29,4 +31,10 @@ public class UserEntity {
   private String profileImage;
   private String snsId;
 
+  public void patch(PatchSignInUserRequestDto dto) {
+    this.userNickname = dto.getUserNickname();
+    // this.userPassword = dto.getUserPassword();
+    this.address = dto.getAddress();
+    this.detailAddress = dto.getDetailAddress();
+  }
 }

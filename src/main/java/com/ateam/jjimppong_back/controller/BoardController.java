@@ -4,8 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -26,6 +30,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class BoardController {
   
   private final BoardService boardService;
+
+  @PostMapping({"", "/"})
+  public ResponseEntity<ResponseDto> postBoard(
+    @RequestBody @Valid PostBoardRequestDto requestBody,
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId, userId);
+    return response;
+  }
+
+  @GetMapping("/my")
+  public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<? super GetMyBoardResponseDto> response = boardService.getMyBoard(userId);
+    return response;
+  }
 
   @GetMapping("/{boardNumber}")
   public ResponseEntity<? super GetBoardResponseDto> getBoard(
@@ -51,6 +72,14 @@ public class BoardController {
     @AuthenticationPrincipal String userId
   ){
     ResponseEntity<ResponseDto> response = boardService.deleteBoard(boardNumber, userId);
+    return response;
+  }
+
+  @GetMapping("/{boardNumber}/comment")
+  public ResponseEntity<? super GetCommentResponseDto> getComment(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<? super GetCommentResponseDto> response = boardService.getComment(boardNumber);
     return response;
   }
 
