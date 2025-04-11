@@ -68,5 +68,30 @@ public class ResponseDto {
         ResponseDto body = new ResponseDto(ResponseCode.AUTH_FAIL, ResponseMessage.AUTH_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
+  
+    public static ResponseEntity<ResponseDto> duplicatedEmail() {
+        ResponseDto body = new ResponseDto(ResponseCode.DUPLICATED_EMAIL, ResponseMessage.DUPLICATED_EMAIL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> noExistBoard() {
+        ResponseDto body = new ResponseDto(ResponseCode.NO_EXIST_BOARD, ResponseMessage.NO_EXIST_BOARD);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> passwordNotMatched() {
+        ResponseDto body = new ResponseDto(ResponseCode.PASSWORD_NOT_MATCHED, ResponseMessage.PASSWORD_NOT_MATCHED);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> noPermission() {
+        ResponseDto body = new ResponseDto(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    public static ResponseEntity<ResponseDto> mailSendFailed() {
+        ResponseDto body = new ResponseDto(ResponseCode.MAIL_SEND_FAILED, ResponseMessage.MAIL_SEND_FAILED);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
 
 }

@@ -9,4 +9,11 @@ public interface ResponseMessage {
     String DUPLICATIED_EMAIL = "Duplicatied Email";
     String MAIL_SEND_FAIL = "Mail send Fail";
     String AUTH_FAIL = "Auth Fail";
+    String DUPLICATED_EMAIL = "Duplicated Email";
+    String NO_EXIST_BOARD = "No Exist Board.";
+    String PASSWORD_NOT_MATCHED = "Password Not Matched";
+    
+    String NO_PERMISSION = "No Permission.";
+
+    String MAIL_SEND_FAILED = "Mail send Failed";
 }

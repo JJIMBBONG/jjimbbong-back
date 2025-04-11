@@ -19,94 +19,71 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ateam.jjimppong_back.filter.JwtAuthenticationFilter;
-import com.ateam.jjimppong_back.handler.OAuth2SuccessHandler;
-import com.ateam.jjimppong_back.service.implement.OAuth2UserServiceImplement;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-// class: Spring Web 보안 설정 클래스 //
-// description: Bearer 인증 방식을 사용하기 위해 Basic 인증 미사용 //
-// description: REST API 서버로 Session 유지하지 않음 //
-// description: CORS 정책은 모든 출처 및 리소스에 대해서 허용 //
+// class: Spring Web 보안 설정 //
 @Configurable
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final OAuth2UserServiceImplement oAuth2UserService;
+  
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // function: Web Security 설정 메서드 //
-    @Bean
-    protected SecurityFilterChain configure(HttpSecurity security) throws Exception{ 
-        
-        security.
-            // description: Basic 인증 미사용 지정 //
-            // description: 웹 페이지 들어갔을때 로그인 페이지 미사용 //
-            httpBasic(HttpBasicConfigurer::disable)
-            // description: Session 유지하지 않음 지정 //
-            .sessionManagement(management -> management
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            // description: csrf 취약점 대비 미사용 지정 //
-            .csrf(CsrfConfigurer::disable)
-            // description: CORS 정책 설정 //
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            // description: 인가 설정 //
-            .authorizeHttpRequests(request -> request
-            .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            // description: Oauth 로그인 적용 //
-            .oauth2Login(oauth2 -> oauth2
-                .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-                // 들어오는 곳
-                .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns"))
-                .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-                .successHandler(oAuth2SuccessHandler)
-            )
-            // description: 인증 또는 인가 실패에 대한 처리 //
-            .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(new AuthenticationFailEntryPoint())
-            )
-            // description: Jwt Authentication Filter 등록 //
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+  // function: Web Security 설정 메소드 //
+  @Bean
+  protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
 
-        return security.build();
-    }
+    security
+      .httpBasic(HttpBasicConfigurer::disable)
+      .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .csrf(CsrfConfigurer::disable)
+      .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+      .authorizeHttpRequests(request -> request
+        .requestMatchers("/api/v1/auth", "/api/v1/auth/**").permitAll()
+        .requestMatchers("/api/v1/boards", "/api/v1/my-page", "/api/v1/my-page/**").authenticated()
+        .anyRequest().authenticated()
+      )
+      .exceptionHandling(exception -> exception
+        .authenticationEntryPoint(new AuthenticationFailEntryPoint())
+      )
+      .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    // function: CORS 정책 설정 객체를 반환하는 메서드 //
-    @Bean
-    protected CorsConfigurationSource corsConfigurationSource() {
+    return security.build();
+  }
 
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedOrigin("*");
+  // function: CORS 정책 설정 객체를 반환하는 메소드 //
+  @Bean
+  protected CorsConfigurationSource corsConfigurationSource() {
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
+    configuration.addAllowedOrigin("http://127.0.0.1:3000"); // React 개발 서버 도메인
 
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+
+    return source;
+  }
 
 }
 
-class AuthenticationFailEntryPoint implements AuthenticationEntryPoint{
+class AuthenticationFailEntryPoint implements AuthenticationEntryPoint {
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
-        
-        authException.printStackTrace();
+  @Override
+  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    
+    authException.printStackTrace();
 
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("{ \"code\": \"AF\", \"message\": \"Auth Fail.\" }");
-    }  
+    response.setContentType("application/json");
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.getWriter().write("{ \"code\": \"AF\", \"message\": \"Auth Fail.\" }");
+
+  }
+  
 }

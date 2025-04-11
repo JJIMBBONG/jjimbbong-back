@@ -1,7 +1,15 @@
 package com.ateam.jjimppong_back.common.entity;
 
 import jakarta.persistence.Column;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -13,12 +21,13 @@ import lombok.Setter;
 @Table(name = "board")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BoardEntity {
     
     @Id
     @Column(name = "board_number")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer boardNumber;
 
     @Column(name = "user_id")
@@ -40,7 +49,7 @@ public class BoardEntity {
     private String boardAddressCategory;
 
     @Column(name = "board_dtail_category")
-    private String boardDetailCatagory;
+    private String boardDetailCategory;
 
     @Column(name = "board_write_date")
     private String boardWriteDate;
@@ -56,6 +65,30 @@ public class BoardEntity {
 
     @Column(name = "board_image")
     private String boardImage;
+
+    public BoardEntity(PostBoardRequestDto dto, String userNickname, String userId) {
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        this.userId = userId;
+        this.userNickname = userNickname;
+        this.boardContent = dto.getBoardContent();
+        this.boardTitle = dto.getBoardTitle();
+        this.boardAddressCategory = dto.getBoardAddressCategory();
+        this.boardDetailCategory = dto.getBoardDetailCategory();
+        this.boardWriteDate = now.format(dateTimeFormatter);
+        this.boardViewCount = 0;
+        this.boardScore = 0;
+        this.boardAddress = dto.getBoardAddress();
+        this.boardImage = dto.getBoardImage();
+    }
+    
+
+    public void patch(PatchBoardRequestDto dto) {
+        this.boardAddressCategory = dto.getBoardAddressCategory();
+        this.boardDetailCategory = dto.getBoardDetailCategory();
+        this.boardTitle = dto.getBoardTitle();
+        this.boardContent = dto.getBoardContent();
+    }
 
 }
 

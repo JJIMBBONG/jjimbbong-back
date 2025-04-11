@@ -1,6 +1,7 @@
 package com.ateam.jjimppong_back.common.entity;
 
-import jakarta.persistence.Column;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PostMyPageInfoRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,24 +14,25 @@ import lombok.Setter;
 @Table(name = "my_page")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class MyPageEntity {
-    
-    @Id
-    @Column(name = "user_id")
-    private String userId;
+  @Id
+  private String userId;
+  private String userNickname;
+  private Integer boardNumber;
+  private Integer userLevel;
+  private Integer userScore;
 
-    @Column(name = "user_nickname")
-    private String userNickname;
+  public MyPageEntity(PostMyPageInfoRequestDto dto, String userId, String userNickname) {
+    this.userId = userId;
+    this.userNickname = userNickname;
+    this.userLevel = dto.getUserLevel();
+    this.userScore = dto.getUserScore();
+  }
 
-    @Column(name = "user_number")
-    private Integer boardNumber;
-
-    @Column(name = "user_level")
-    private Integer userLevel;
-
-    @Column(name = "user_score")
-    private Integer userScore;
-
+  public MyPageEntity(PostMyPageInfoRequestDto dto, MyPageEntity preEntity, String userId) {
+    this.userId = userId;
+    this.userScore = preEntity.getUserScore() + dto.getUserScore();
+  }
 }

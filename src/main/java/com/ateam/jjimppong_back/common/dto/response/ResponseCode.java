@@ -9,4 +9,11 @@ public interface ResponseCode {
     String DUPLICATIED_EMAIL = "DE";
     String MAIL_SEND_FAIL = "MF";
     String AUTH_FAIL = "AF";
+    String DUPLICATED_EMAIL = "DE";
+    String NO_EXIST_BOARD = "NB";
+    String PASSWORD_NOT_MATCHED = "PN";
+    
+    String NO_PERMISSION = "NP";
+
+    String MAIL_SEND_FAILED = "MF";
 }
