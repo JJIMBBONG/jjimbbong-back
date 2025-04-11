@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.IdSearchRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
@@ -18,7 +19,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -72,6 +72,14 @@ public class AuthController {
         @RequestBody @Valid SignInRequestDto requestBody
     ){
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+        return response;
+    }
+        
+    @PostMapping("/id-search")
+    ResponseEntity<ResponseDto> idSearch( 
+        @RequestBody @Valid IdSearchRequestDto requestBody
+    ){ 
+        ResponseEntity<ResponseDto> response = authService.idSearch(requestBody);
         return response;
     }
     

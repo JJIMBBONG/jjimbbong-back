@@ -64,7 +64,5 @@ public class UserEntity {
         this.gender = dto.getGender();
         this.userLevel = Integer.parseInt(dto.getUserLevel());
         this.joinType = dto.getJoinType();
-
     }
-
 }

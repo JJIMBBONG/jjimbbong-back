@@ -9,13 +9,13 @@ import lombok.Getter;
 
 @Getter
 // access를 private로 설정
-@AllArgsConstructor(access=AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResponseDto {
     private String code;
     private String message;
 
-    // 응답 코드, 메세지 작성
-    public ResponseDto(){ 
+    // 일반 응답용 생성자
+    public ResponseDto() {
         this.code = ResponseCode.SUCCESS;
         this.message = ResponseMessage.SUCCESS;
     }
@@ -25,6 +25,12 @@ public class ResponseDto {
         ResponseDto body = new ResponseDto();
         
         return ResponseEntity.status(status).body(body);
+    }
+
+    // 성공 응답 메서드 추가 (성공 메시지와 상태 코드 200)
+    public static ResponseEntity<ResponseDto> successes(String message) {
+        ResponseDto body = new ResponseDto(ResponseCode.SUCCESS, message);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     public static ResponseEntity<ResponseDto> validationFail() {

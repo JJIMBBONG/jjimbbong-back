@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.IdCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.IdSearchRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
@@ -129,6 +130,32 @@ public class AuthServiceImplement implements AuthService{
         return ResponseDto.success(HttpStatus.OK);
     }
 
+
+    @Override
+    public ResponseEntity<ResponseDto> idSearch(IdSearchRequestDto dto) {
+        try {
+            String name = dto.getName();
+            String userEmail = dto.getUserEmail();
+            String authNumber = dto.getAuthNumber();
+
+            // 이메일과 인증번호가 일치하는지 확인
+            boolean isMatched = emailAuthNumberRepository.existsByUserEmailAndAuthNumber(userEmail, authNumber);
+            if (!isMatched) {
+                return ResponseDto.authFail(); // 인증번호 불일치
+            }
+
+            // 사용자 이름과 이메일로 사용자 정보 찾기
+            UserEntity userEntity = userRepository.findByNameAndUserEmail(name, userEmail);       
+
+            // 아이디 반환
+            return ResponseDto.successes(userEntity.getUserId());
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
+
     @Override
     @Transactional
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
@@ -201,4 +228,5 @@ public class AuthServiceImplement implements AuthService{
         return SignInResponseDto.success(accessToken);
 
     }
+
 }
