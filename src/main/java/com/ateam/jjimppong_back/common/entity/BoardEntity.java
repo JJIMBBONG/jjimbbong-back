@@ -1,8 +1,8 @@
 package com.ateam.jjimppong_back.common.entity;
 
+import jakarta.persistence.Column;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
@@ -26,19 +26,44 @@ import lombok.Setter;
 public class BoardEntity {
     
     @Id
+    @Column(name = "board_number")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer boardNumber;
+
+    @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "user_nickname")
     private String userNickname;
+
+    @Column(name = "user_level")
     private Integer userLevel;
+
+    @Column(name = "board_content")
     private String boardContent;
+
+    @Column(name = "board_title")
     private String boardTitle;
+
+    @Column(name = "board_address_category")
     private String boardAddressCategory;
+
+    @Column(name = "board_dtail_category")
     private String boardDetailCategory;
+
+    @Column(name = "board_write_date")
     private String boardWriteDate;
+
+    @Column(name = "board_view_count")
     private Integer boardViewCount;
+
+    @Column(name = "board_score")
     private Integer boardScore;
+
+    @Column(name = "board_address")
     private String boardAddress;
+
+    @Column(name = "board_image")
     private String boardImage;
 
     public BoardEntity(PostBoardRequestDto dto, String userNickname, String userId) {
@@ -66,3 +91,4 @@ public class BoardEntity {
     }
 
 }
+
