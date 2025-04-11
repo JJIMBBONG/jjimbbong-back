@@ -146,6 +146,24 @@ public class BoardServiceImplement implements BoardService {
 
   }
 
-  
+  @Override
+  public ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String userId) {
+    
+    try {
+
+      boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!existBoard) return ResponseDto.noExistBoard();
+
+      CommentEntity commentEntity = new CommentEntity(dto, boardNumber, userId);
+      commentRepository.save(commentEntity);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return ResponseDto.success(HttpStatus.CREATED);
+
+  }
   
 }
