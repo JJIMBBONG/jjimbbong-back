@@ -12,7 +12,7 @@ public class BoardVO {
   private Integer boardNumber;
   private String boardWriteDate;
   private String boardAddressCategory;
-  private List<String> boardDetailCategory;
+  private String boardDetailCategory;
   private String boardTitle;
   private String boardContent;
   private String boardAddress;
@@ -24,6 +24,7 @@ public class BoardVO {
     this.boardNumber = boardEntity.getBoardNumber();
     this.boardWriteDate = boardEntity.getBoardWriteDate();
     this.boardAddressCategory = boardEntity.getBoardAddressCategory();
+    this.boardDetailCategory = boardEntity.getBoardDetailCategory();
     this.boardTitle = boardEntity.getBoardTitle();
     this.boardContent = boardEntity.getBoardContent();
     this.boardAddress = boardEntity.getBoardAddress();

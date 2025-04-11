@@ -84,12 +84,12 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping("/password-reset")
-    ResponseEntity<ResponseDto> passwordReset( 
-        @RequestBody @Valid PasswordResetRequestDto requestBody
-    ){ 
-        ResponseEntity<ResponseDto> response = authService.passwordReset(requestBody);
-        return response;
-    }
+    // @PostMapping("/password-reset")
+    // ResponseEntity<ResponseDto> passwordReset( 
+    //     @RequestBody @Valid PasswordResetRequestDto requestBody
+    // ){ 
+    //     ResponseEntity<ResponseDto> response = authService.passwordReset(requestBody);
+    //     return response;
+    // }
     
 }
