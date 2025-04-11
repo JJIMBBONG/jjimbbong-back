@@ -15,4 +15,5 @@ public class PatchSignInUserRequestDto {
   private String address;
   @NotBlank
   private String detailAddress;
+  private String profileImage;
 }

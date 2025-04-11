@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PostMyPageInfoRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyPageBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
@@ -35,7 +36,17 @@ public class MyPageController {
     return response;
   }
 
-  @GetMapping({"", "/"})
+  @PostMapping("/my-main")
+  public ResponseEntity<ResponseDto> postMyPageInfo(
+    @RequestBody @Valid PostMyPageInfoRequestDto requestBody,
+    @AuthenticationPrincipal String userId,
+    String userNickname
+  ) {
+    ResponseEntity<ResponseDto> response = myPageService.postMyPageInfo(requestBody, userId, userNickname);
+    return response;
+  }
+
+  @GetMapping("/my-main")
   public ResponseEntity<? super GetMyPageBoardResponseDto> getMyPageBoard(
     @AuthenticationPrincipal String userId
   ) {
@@ -43,7 +54,7 @@ public class MyPageController {
     return response;
   }
 
-  @GetMapping({"", "/"})
+  @GetMapping("/user-info")
   public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
     @AuthenticationPrincipal String userId
   ) {
@@ -51,7 +62,7 @@ public class MyPageController {
     return response;
   }
 
-  @PatchMapping({"", "/"})
+  @PatchMapping("/user-info/update")
   public ResponseEntity<ResponseDto> patchSignInUser(
     @RequestBody @Valid PatchSignInUserRequestDto requestBody,
     @AuthenticationPrincipal String userId

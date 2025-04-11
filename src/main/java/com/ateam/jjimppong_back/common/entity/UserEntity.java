@@ -33,7 +33,7 @@ public class UserEntity {
 
   public void patch(PatchSignInUserRequestDto dto) {
     this.userNickname = dto.getUserNickname();
-    this.userPassword = dto.getUserPassword();
+    // this.userPassword = dto.getUserPassword();
     this.address = dto.getAddress();
     this.detailAddress = dto.getDetailAddress();
   }
