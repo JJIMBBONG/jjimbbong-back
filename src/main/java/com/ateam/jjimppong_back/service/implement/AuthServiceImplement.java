@@ -43,6 +43,8 @@ public class AuthServiceImplement implements AuthService{
     private final EmailAuthNumberRepository emailAuthNumberRepository;
     // 메일 전송
     private final MailProvider mailProvider;
+    // 임시비밀번호 전송
+    private final MailPasswordResetProvider mailPasswordResetProvider;
     // Jwt키 생성 및 검증
     private final JwtProvider jwtProvider;
     // 비밀번호 암호화
@@ -159,40 +161,41 @@ public class AuthServiceImplement implements AuthService{
         }
     }
 
-    // @Override
-    // public ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto) {
-    //     try {
-    //         String userId = dto.getUserId();
-    //         String userEmail = dto.getUserEmail();
-    //         String authNumber = dto.getAuthNumber();
+    @Override
+    public ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto) {
+        try {
+            String userId = dto.getUserId();
+            String userEmail = dto.getUserEmail();
+            String authNumber = dto.getAuthNumber();
 
-    //         // 이메일과 인증번호가 일치하는지 확인
-    //         boolean isMatched = emailAuthNumberRepository.existsByUserEmailAndAuthNumber(userEmail, authNumber);
-    //         if (!isMatched) {
-    //             return ResponseDto.authFail(); // 인증번호 불일치
-    //         }
+            // 이메일과 인증번호가 일치하는지 확인
+            boolean isMatched = emailAuthNumberRepository.existsByUserEmailAndAuthNumber(userEmail, authNumber);
+            if (!isMatched) {
+                return ResponseDto.authFail(); // 인증번호 불일치
+            }
 
-    //         // 사용자 ID와 이메일로 사용자 정보 찾기
-    //         UserEntity userEntity = userRepository.findByUserIdAndUserEmail(userId, userEmail);
+            // 사용자 ID와 이메일로 사용자 정보 찾기
+            UserEntity userEntity = userRepository.findByUserIdAndUserEmail(userId, userEmail);
 
-    //         // 임시 비밀번호 생성
-    //         String temporaryPassword = TemporaryPasswordUtil.createCodeNumber();
+            // 임시 비밀번호 생성
+            String temporaryPassword = TemporaryPasswordUtil.createCodeNumber();
 
-    //         // 비밀번호 암호화 (Spring Security 사용 시)
-    //         String encodedPassword = passwordEncoder.encode(temporaryPassword);
-    //         userEntity.setUserPassword(encodedPassword);
+            // 비밀번호 암호화 (Spring Security 사용 시)
+            String encodedPassword = passwordEncoder.encode(temporaryPassword);
+            userEntity.setUserPassword(encodedPassword);
 
-    //         // DB 업데이트
-    //         userRepository.save(userEntity);
+            // DB 업데이트
+            userRepository.save(userEntity);
 
-    //         // // 이메일 전송 (임시 비밀번호 포함)
-    //         // MailPasswordResetProvider.mailAuthSend(userEmail, temporaryPassword);
+            // 이메일 전송 (임시 비밀번호 포함)
+            mailPasswordResetProvider.mailPasswordSend(userEmail, temporaryPassword);
+            return ResponseDto.success(HttpStatus.OK);
 
-    //     } catch (Exception exception) {
-    //         exception.printStackTrace();
-    //         return ResponseDto.databaseError();
-    //     }
-    // }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
 
     @Override
     @Transactional

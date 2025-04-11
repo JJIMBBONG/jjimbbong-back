@@ -32,8 +32,8 @@ public class MailPasswordResetProvider {
     private String from;
     private final JavaMailSender javaMailSender;
 
-    // 이메일 인증 메일 전송 메서드
-    public void mailAuthSend (String to, String authNumber) throws MessagingException {
+    // 이메일 임시비밀번호 전송 메서드
+    public void mailPasswordSend (String to, String temporaryPassword) throws MessagingException {
 
         // 전송할 메시지 객체 생성
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -42,20 +42,20 @@ public class MailPasswordResetProvider {
         // 메시지 수신자 메일 지정
         mimeMessage.setRecipient(RecipientType.TO, new InternetAddress(to));
         // 메시지 제목 지정
-        mimeMessage.setSubject("찜뽕 인증 번호");
+        mimeMessage.setSubject("찜뽕 임시 비밀번호");
         // 메시지 내용 지정
-        mimeMessage.setText(getText(authNumber), "utf-8", "html");
+        mimeMessage.setText(getText(temporaryPassword), "utf-8", "html");
         // 메시지 전송
         javaMailSender.send(mimeMessage);
 
     }
 
-    private String getText (String authNumber) {
+    private String getText (String temporaryPassword) {
         String text =
         "<h2 style='text-align: center;'>찜뽕 임시 비밀번호</h2>" +
         "<p style='text-align: center;'>찜뽕이 임시 비밀번호를 생성하였습니다.<p>" +
         "<p style='text-align: center;'>임시비밀번호는 <strong style='color: red;'>" + 
-        authNumber +
+        temporaryPassword +
         "</strong>입니다.</p>" + 
         "<img src='https://postfiles.pstatic.net/MjAyNTA0MTBfNjIg/MDAxNzQ0MjQ4NTczMDE1.keJ3cgKz7FLDbLyBuNzw6riewv3ysHGJ_9z4czxHkzMg.-JhfAakkeejP_aaeTjjHQ8PqCS7VlyB4y0wX3L2DAswg.PNG/jjimbbong.png?type=w773' alt='찜뽕 이미지' style='display: block; margin-left: auto; margin-right: auto;'/>";
         return text;
