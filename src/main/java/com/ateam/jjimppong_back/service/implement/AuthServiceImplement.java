@@ -52,10 +52,10 @@ public class AuthServiceImplement implements AuthService{
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
 
         try{
-          
-          String userId = dto.getUserId();
-          boolean existUser = userRepository.existsByUserId(userId);
-          if(existUser) return ResponseDto.existUser();
+
+        String userId = dto.getUserId();
+        boolean existUser = userRepository.existsByUserId(userId);
+        if(existUser) return ResponseDto.existUser();
 
         } catch(Exception exception){ 
             exception.printStackTrace();
@@ -72,11 +72,11 @@ public class AuthServiceImplement implements AuthService{
             String userNickname = dto.getUserNickname();
             boolean existNickname = userRepository.existsByUserNickname(userNickname);
             if(existNickname) return ResponseDto.existUser();
-  
-          } catch(Exception exception){ 
-              exception.printStackTrace();
-              return ResponseDto.databaseError();
-          }
+
+        } catch(Exception exception){ 
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
 
         return ResponseDto.success(HttpStatus.OK);
     }
@@ -101,14 +101,14 @@ public class AuthServiceImplement implements AuthService{
 
             // 메일 전송 기능 사용
             mailProvider.mailAuthSend(userEmail, authNumber);
-  
-          } catch(MessagingException exception){ 
+
+        } catch(MessagingException exception){ 
             exception.printStackTrace();
             return ResponseDto.mailSendFail();
-          } catch(Exception exception){ 
-              exception.printStackTrace();
-              return ResponseDto.databaseError();
-          }
+        } catch(Exception exception){ 
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
 
         return ResponseDto.success(HttpStatus.OK);
 

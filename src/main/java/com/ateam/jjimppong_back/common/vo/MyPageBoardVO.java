@@ -11,8 +11,6 @@ import lombok.Getter;
 public class MyPageBoardVO {
   private Integer boardNumber;
   private String boardImage;
-  private String userNickname;
-  private Integer userLevel;
   private String boardTitle;
   private String boardWriteDate;
   private Integer boardViewCount;
@@ -20,8 +18,6 @@ public class MyPageBoardVO {
   private MyPageBoardVO(BoardEntity boardEntity) {
     this.boardNumber = boardEntity.getBoardNumber();
     this.boardImage = boardEntity.getBoardImage();
-    this.userNickname = boardEntity.getUserNickname();
-    this.userLevel = boardEntity.getUserLevel();
     this.boardTitle = boardEntity.getBoardTitle();
     this.boardWriteDate = boardEntity.getBoardWriteDate();
     this.boardViewCount = boardEntity.getBoardViewCount();
