@@ -8,5 +8,5 @@ import com.ateam.jjimppong_back.common.entity.pk.GoodPK;
 
 @Repository
 public interface GoodRepository extends JpaRepository<GoodEntity, GoodPK> {
-
+    
 }
