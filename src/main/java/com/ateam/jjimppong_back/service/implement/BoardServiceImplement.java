@@ -17,6 +17,8 @@ import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.entity.CommentEntity;
+import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
+import com.ateam.jjimppong_back.common.vo.RecommandBoardVO;
 import com.ateam.jjimppong_back.repository.BoardRepository;
 import com.ateam.jjimppong_back.repository.CommentRepository;
 import com.ateam.jjimppong_back.service.BoardService;
@@ -87,20 +89,35 @@ public class BoardServiceImplement implements BoardService {
   // 추천 게시물 목록 가져오기 //
   @Override
   public ResponseEntity<? super GetRecommandBoardResponseDto> getRecommandBoard() {
-    List<BoardEntity> boardEntities = new ArrayList<>();
+    List<RecommandBoardVO> voList = new ArrayList<>();
 
     try {
+        List<RecommandBoardProjection> projections = boardRepository.findAllWithLikeCount();
 
-      boardEntities = boardRepository.findByOrderByBoardScoreDesc();
-      if( boardEntities == null ) return ResponseDto.noExistBoard();
+        for (RecommandBoardProjection p : projections) {
+            RecommandBoardVO vo = new RecommandBoardVO(
+                p.getBoardWriteDate(),
+                p.getBoardAddressCategory(),
+                p.getBoardDetailCategory(),
+                p.getBoardTitle(),
+                p.getBoardViewCount(),
+                p.getBoardScore(),
+                p.getBoardImage(),
+                p.getUserNickname(),
+                p.getGoodCount()
+            );
+            voList.add(vo);
+        }
 
-    } catch(Exception exception){
-      exception.printStackTrace();;
-      return ResponseDto.databaseError();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseDto.databaseError();
     }
 
-    return GetRecommandBoardResponseDto.success(boardEntities);
+    return GetRecommandBoardResponseDto.success(voList);
   }
+
+
 
   @Override
   public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String userId) {

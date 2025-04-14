@@ -16,6 +16,8 @@ public class RecommandBoardVO {
     private Integer boardViewCount;
     private Integer boardScore;
     private String boardImage;
+    private String userNickname;
+    private Integer goodCount;
 
     private RecommandBoardVO(BoardEntity boardEntity) {
     this.boardWriteDate = boardEntity.getBoardWriteDate();
@@ -26,6 +28,20 @@ public class RecommandBoardVO {
     this.boardScore = boardViewCount;
     this.boardImage = boardEntity.getBoardImage();
   }
+
+    public RecommandBoardVO(String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
+                              String boardTitle, Integer boardViewCount, Integer boardScore,
+                              String boardImage, String userNickname, Integer goodCount) {
+          this.boardWriteDate = boardWriteDate;
+          this.boardAddressCategory = boardAddressCategory;
+          this.boardDetailCategory = boardDetailCategory;
+          this.boardTitle = boardTitle;
+          this.boardViewCount = boardViewCount;
+          this.boardScore = boardScore;
+          this.boardImage = boardImage;
+          this.userNickname = userNickname;
+          this.goodCount = goodCount;
+      }
 
   public static List<RecommandBoardVO> getList(List<BoardEntity> boardEntities) {
 
