@@ -27,12 +27,6 @@ public class ResponseDto {
         return ResponseEntity.status(status).body(body);
     }
 
-    // 성공 응답 메서드 추가 (성공 메시지와 상태 코드 200)
-    public static ResponseEntity<ResponseDto> successes(String message) {
-        ResponseDto body = new ResponseDto(ResponseCode.SUCCESS, message);
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
-
     public static ResponseEntity<ResponseDto> validationFail() {
         ResponseDto body = new ResponseDto(ResponseCode.VALIDATION_FAIL, ResponseMessage.VALIDATION_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);

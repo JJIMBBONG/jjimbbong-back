@@ -13,6 +13,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.service.AuthService;
 
@@ -77,10 +78,10 @@ public class AuthController {
     }
         
     @PostMapping("/id-search")
-    ResponseEntity<ResponseDto> idSearch( 
+    ResponseEntity<? super IdSearchResponseDto> idSearch( 
         @RequestBody @Valid IdSearchRequestDto requestBody
     ){ 
-        ResponseEntity<ResponseDto> response = authService.idSearch(requestBody);
+        ResponseEntity<? super IdSearchResponseDto> response = authService.idSearch(requestBody);
         return response;
     }
 
