@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -44,8 +45,8 @@ public class WebSecurityConfig {
       .csrf(CsrfConfigurer::disable)
       .cors(cors -> cors.configurationSource(corsConfigurationSource()))
       .authorizeHttpRequests(request -> request
+        .requestMatchers(HttpMethod.GET).permitAll()
         .requestMatchers("/api/v1/auth", "/api/v1/auth/**").permitAll()
-        .requestMatchers("/api/v1/boards", "/api/v1/my-page", "/api/v1/my-page/**").authenticated()
         .anyRequest().authenticated()
       )
       .exceptionHandling(exception -> exception
