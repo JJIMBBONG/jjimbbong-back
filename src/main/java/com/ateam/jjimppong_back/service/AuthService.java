@@ -11,6 +11,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 
 public interface AuthService {
@@ -20,7 +21,7 @@ public interface AuthService {
     ResponseEntity<ResponseDto> emailAuth(EmailAuthRequestDto dto);
     ResponseEntity<ResponseDto> emailAuthCheck(EmailAuthCheckRequestDto dto);
     ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto);
-    ResponseEntity<ResponseDto> idSearch(IdSearchRequestDto dto);
+    ResponseEntity<? super IdSearchResponseDto> idSearch(IdSearchRequestDto dto);
     ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto);
 
     // 와일드 카드형태로 입력

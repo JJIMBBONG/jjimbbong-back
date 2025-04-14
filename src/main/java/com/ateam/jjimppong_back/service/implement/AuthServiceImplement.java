@@ -15,6 +15,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
@@ -137,7 +138,7 @@ public class AuthServiceImplement implements AuthService{
 
 
     @Override
-    public ResponseEntity<ResponseDto> idSearch(IdSearchRequestDto dto) {
+    public ResponseEntity<? super IdSearchResponseDto> idSearch(IdSearchRequestDto dto) {
         try {
             String name = dto.getName();
             String userEmail = dto.getUserEmail();
@@ -153,7 +154,7 @@ public class AuthServiceImplement implements AuthService{
             UserEntity userEntity = userRepository.findByNameAndUserEmail(name, userEmail);       
 
             // 아이디 반환
-            return ResponseDto.successes(userEntity.getUserId());
+            return IdSearchResponseDto.success(userEntity.getUserId());
 
         } catch (Exception exception) {
             exception.printStackTrace();
