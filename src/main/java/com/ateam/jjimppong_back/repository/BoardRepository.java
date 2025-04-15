@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
+import com.ateam.jjimppong_back.common.vo.BoardProjection;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 
 @Repository
@@ -20,7 +21,26 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
 
   List<BoardEntity> findByUserIdOrderByBoardWriteDateDesc(String UserId);
   List<BoardEntity> findByOrderByBoardScoreDesc();
-  List<BoardEntity> findByUserIdOrderByBoardNumberDesc(String userId);
+
+  @Query(value = 
+    "SELECT b.board_number AS boardNumber, " +
+    "       b.board_content AS boardContent, " +
+    "       b.board_title AS boardTitle, " +
+    "       b.board_address_category AS boardAddressCategory, " +
+    "       b.board_detail_category AS boardDetailCategory, " +
+    "       b.board_write_date AS boardWriteDate, " +
+    "       b.board_view_count AS boardViewCount, " +
+    "       b.board_score AS boardScore, " +
+    "       b.board_address AS boardAddress, " +
+    "       b.board_image AS boardImage, " +
+    "       u.user_id AS userId, " +
+    "       u.user_nickname AS userNickname, " +
+    "       u.user_level AS userLevel " +
+    "FROM board b " +
+    "LEFT JOIN user u ON b.user_id = u.user_id " +
+    "ORDER BY b.board_number DESC",
+    nativeQuery = true)
+    List<BoardProjection> findByUserIdOrderByBoardNumberDesc(String userId);
 
   @Query(value =
         "SELECT b.board_write_date AS boardWriteDate, " +

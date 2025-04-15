@@ -9,6 +9,7 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
+import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,9 +36,12 @@ public class BoardController {
   @PostMapping({"", "/"})
   public ResponseEntity<ResponseDto> postBoard(
     @RequestBody @Valid PostBoardRequestDto requestBody,
-    @AuthenticationPrincipal String userId
+    @AuthenticationPrincipal String userId,
+    @ModelAttribute UserEntity userEntity
   ) {
-    ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId, userId);
+    String userNickname = userEntity.getUserNickname();
+    Integer userLevel = userEntity.getUserLevel();
+    ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId, userNickname, userLevel);
     return response;
   }
 

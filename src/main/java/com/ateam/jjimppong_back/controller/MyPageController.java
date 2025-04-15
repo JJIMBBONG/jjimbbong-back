@@ -62,7 +62,7 @@ public class MyPageController {
     return response;
   }
 
-  @PatchMapping("/user-info/update")
+  @PatchMapping("/user-info")
   public ResponseEntity<ResponseDto> patchSignInUser(
     @RequestBody @Valid PatchSignInUserRequestDto requestBody,
     @AuthenticationPrincipal String userId

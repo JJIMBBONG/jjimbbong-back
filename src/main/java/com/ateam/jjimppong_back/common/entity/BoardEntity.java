@@ -48,7 +48,7 @@ public class BoardEntity {
     @Column(name = "board_address_category")
     private String boardAddressCategory;
 
-    @Column(name = "board_dtail_category")
+    @Column(name = "board_detail_category")
     private String boardDetailCategory;
 
     @Column(name = "board_write_date")
@@ -66,11 +66,12 @@ public class BoardEntity {
     @Column(name = "board_image")
     private String boardImage;
 
-    public BoardEntity(PostBoardRequestDto dto, String userNickname, String userId) {
+    public BoardEntity(PostBoardRequestDto dto, String userId, String userNickname, Integer userLevel) {
         LocalDate now = LocalDate.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.userId = userId;
         this.userNickname = userNickname;
+        this.userLevel = userLevel;
         this.boardContent = dto.getBoardContent();
         this.boardTitle = dto.getBoardTitle();
         this.boardAddressCategory = dto.getBoardAddressCategory();
