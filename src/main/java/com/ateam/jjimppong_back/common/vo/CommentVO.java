@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.ateam.jjimppong_back.common.entity.CommentEntity;
 
+import lombok.Getter;
+
+@Getter
 public class CommentVO {
   private Integer commentNumber;
   private String commentWriterId;

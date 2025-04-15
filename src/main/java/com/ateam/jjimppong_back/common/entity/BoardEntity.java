@@ -2,7 +2,6 @@ package com.ateam.jjimppong_back.common.entity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PatchBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
