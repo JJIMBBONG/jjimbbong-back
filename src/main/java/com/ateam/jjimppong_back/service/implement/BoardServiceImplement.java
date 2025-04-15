@@ -17,10 +17,14 @@ import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.entity.CommentEntity;
+import com.ateam.jjimppong_back.common.entity.UserEntity;
+import com.ateam.jjimppong_back.common.vo.BoardProjection;
+import com.ateam.jjimppong_back.common.vo.BoardVO;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardVO;
 import com.ateam.jjimppong_back.repository.BoardRepository;
 import com.ateam.jjimppong_back.repository.CommentRepository;
+import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,15 +33,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImplement implements BoardService {
 
+  private final UserRepository userRepository;
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository; 
 
   @Override
-  public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname) {
+  public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname, Integer userLevel) {
     
     try {
 
-      BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname);
+      UserEntity userEntity = userRepository.findByUserId(userId);
+      userNickname = userEntity.getUserNickname();
+      userLevel = userEntity.getUserLevel();
+
+      BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
       boardRepository.save(boardEntity);
       
     } catch (Exception exception) {
@@ -52,18 +61,37 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId) {
     
-    List<BoardEntity> boardEntities;
+    List<BoardVO> voList = new ArrayList<>();
 
     try {
 
-      boardEntities = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
+      List<BoardProjection> projections = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
+
+      for (BoardProjection B : projections) {
+        BoardVO vo = new BoardVO(
+          B.getBoardNumber(),
+          B.getBoardContent(),
+          B.getBoardTitle(),
+          B.getBoardAddressCategory(),
+          B.getBoardDetailCategory(),
+          B.getBoardWriteDate(),
+          B.getBoardViewCount(),
+          B.getBoardScore(),
+          B.getBoardAddress(),
+          B.getBoardImage(),
+          B.getUserId(),
+          B.getUserNickname(),
+          B.getUserLevel()
+        );
+        voList.add(vo);
+      }
       
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetMyBoardResponseDto.success(boardEntities);
+    return GetMyBoardResponseDto.success(voList);
     
   }
 

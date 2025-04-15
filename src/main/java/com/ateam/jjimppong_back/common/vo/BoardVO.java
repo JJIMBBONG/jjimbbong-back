@@ -10,14 +10,17 @@ import lombok.Getter;
 @Getter
 public class BoardVO {
   private Integer boardNumber;
+  private String userId;
+  private String userNickname;
+  private Integer userLevel;
   private String boardWriteDate;
   private String boardAddressCategory;
   private String boardDetailCategory;
   private String boardTitle;
   private String boardContent;
-  private String boardAddress;
   private Integer boardViewCount;
   private Integer boardScore;
+  private String boardAddress;
   private String boardImage;
 
   private BoardVO(BoardEntity boardEntity) {
@@ -30,6 +33,26 @@ public class BoardVO {
     this.boardAddress = boardEntity.getBoardAddress();
     this.boardViewCount = boardEntity.getBoardViewCount();
     this.boardImage = boardEntity.getBoardImage();
+  }
+
+  public BoardVO (
+  Integer boardNumber, String boardContent, String boardTitle,
+  String boardAddressCategory, String boardDetailCategory, String boardWriteDate,
+  Integer boardViewCount, Integer boardScore, String boardAddress, String boardImage,
+  String userId, String userNickname, Integer userLevel) {
+    this.boardNumber = boardNumber;
+    this.boardContent = boardContent;
+    this.boardTitle = boardTitle;
+    this.boardAddressCategory = boardAddressCategory;
+    this.boardDetailCategory = boardDetailCategory;
+    this.boardWriteDate = boardWriteDate;
+    this.boardViewCount = boardViewCount;
+    this.boardScore = boardScore;
+    this.boardAddress = boardAddress;
+    this.boardImage = boardImage;
+    this.userId = userId;
+    this.userNickname = userNickname;
+    this.userLevel = userLevel;
   }
 
   public static List<BoardVO> getList(List<BoardEntity> boardEntities) {

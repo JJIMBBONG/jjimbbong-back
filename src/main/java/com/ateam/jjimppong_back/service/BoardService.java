@@ -12,7 +12,7 @@ import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 
 public interface BoardService {
-  ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname);
+  ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname, Integer userLevel);
   ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId);
   ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
   ResponseEntity<? super GetRecommandBoardResponseDto> getRecommandBoard();
