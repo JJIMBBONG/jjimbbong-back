@@ -9,6 +9,9 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.vo.BoardVO;
 
+import lombok.Getter;
+
+@Getter
 public class GetMyBoardResponseDto extends ResponseDto {
 
   private List<BoardVO> boards;
