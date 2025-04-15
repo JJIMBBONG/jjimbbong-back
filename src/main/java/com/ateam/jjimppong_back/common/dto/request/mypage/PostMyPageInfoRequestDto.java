@@ -8,8 +8,5 @@ import lombok.Getter;
 public class PostMyPageInfoRequestDto {
   @NotNull
   @Min(0)
-  private Integer userLevel;
-  @NotNull
-  @Min(0)
   private Integer userScore;
 }

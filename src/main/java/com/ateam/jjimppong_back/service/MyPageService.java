@@ -12,7 +12,7 @@ import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponse
 public interface MyPageService {
   ResponseEntity<ResponseDto> passwordReCheck(PasswordReCheckRequestDto dto, String userId);
 
-  ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, String userNickname);
+  ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, Integer boardNumber);
 
   ResponseEntity<? super GetMyPageBoardResponseDto> getMyPageBoard(String userId);
 

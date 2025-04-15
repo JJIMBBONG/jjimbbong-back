@@ -38,13 +38,13 @@ public class BoardServiceImplement implements BoardService {
   private final CommentRepository commentRepository; 
 
   @Override
-  public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId, String userNickname, Integer userLevel) {
+  public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId) {
     
     try {
 
       UserEntity userEntity = userRepository.findByUserId(userId);
-      userNickname = userEntity.getUserNickname();
-      userLevel = userEntity.getUserLevel();
+      String userNickname = userEntity.getUserNickname();
+      Integer userLevel = userEntity.getUserLevel();
 
       BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
       boardRepository.save(boardEntity);
