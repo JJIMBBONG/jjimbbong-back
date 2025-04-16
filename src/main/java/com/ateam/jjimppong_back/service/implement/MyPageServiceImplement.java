@@ -51,16 +51,22 @@ public class MyPageServiceImplement implements MyPageService {
   }
 
   @Override
-  public ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, String userNickname) {
+  public ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, Integer boardNumber) {
     
     try {
       MyPageEntity myPageEntity = null;
+      UserEntity userEntity = userRepository.findByUserId(userId);
+
+      Integer userLevel = userEntity.getUserLevel();
+      String userNickname = userEntity.getUserNickname();
+
       Integer count = myPageRepository.countByUserId(userId);
+
       if (count == 0) {
-        myPageEntity = new MyPageEntity(dto, userId, userNickname);
+        myPageEntity = new MyPageEntity(userId, userNickname, userLevel, boardNumber, dto);
       } else {
         MyPageEntity preMyPageEntity = myPageRepository.findByUserId(userId);
-        myPageEntity = new MyPageEntity(dto, preMyPageEntity, userId);
+        myPageEntity = new MyPageEntity(dto, preMyPageEntity, userNickname, userId, boardNumber, userLevel);
       }
       myPageRepository.save(myPageEntity);
     } catch (Exception exception) {
