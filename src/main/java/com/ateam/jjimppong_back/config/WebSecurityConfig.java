@@ -68,6 +68,7 @@ public class WebSecurityConfig {
     configuration.addAllowedOrigin("http://localhost:3000"); // 추가 허용
     configuration.setAllowCredentials(true);
 
+
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
 
