@@ -13,10 +13,14 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.entity.CommentEntity;
+import com.ateam.jjimppong_back.common.entity.GoodEntity;
+import com.ateam.jjimppong_back.common.entity.HateEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.vo.BoardProjection;
 import com.ateam.jjimppong_back.common.vo.BoardVO;
@@ -24,6 +28,8 @@ import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardVO;
 import com.ateam.jjimppong_back.repository.BoardRepository;
 import com.ateam.jjimppong_back.repository.CommentRepository;
+import com.ateam.jjimppong_back.repository.GoodRepository;
+import com.ateam.jjimppong_back.repository.HateRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 
@@ -36,6 +42,8 @@ public class BoardServiceImplement implements BoardService {
   private final UserRepository userRepository;
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository; 
+  private final GoodRepository goodRepository;
+  private final HateRepository hateRepository;
 
   @Override
   public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId) {
@@ -124,6 +132,7 @@ public class BoardServiceImplement implements BoardService {
 
         for (RecommandBoardProjection p : projections) {
             RecommandBoardVO vo = new RecommandBoardVO(
+                p.getBoardNumber(),
                 p.getBoardWriteDate(),
                 p.getBoardAddressCategory(),
                 p.getBoardDetailCategory(),
@@ -228,6 +237,79 @@ public class BoardServiceImplement implements BoardService {
 
     return ResponseDto.success(HttpStatus.CREATED);
 
+  }
+
+  // 좋아요, 싫어요
+  @Override
+  public ResponseEntity<? super GetGoodResponseDto> getGood(Integer boardNumber) {
+    List<GoodEntity> goodEntities = new ArrayList<>();
+    
+    try {
+      
+      goodEntities = goodRepository.findByBoardNumber(boardNumber);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetGoodResponseDto.success(goodEntities);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> putGood(Integer boardNumber, String userId) {
+    try {
+
+      GoodEntity goodEntity = goodRepository.findByUserIdAndBoardNumber(userId, boardNumber);
+      if (goodEntity == null) {
+        goodEntity = new GoodEntity(userId, boardNumber);
+        goodRepository.save(goodEntity);
+      } else {
+        goodRepository.delete(goodEntity);
+      }
+
+    } catch(Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<? super GetHateResponseDto> getHate(Integer boardNumber) {
+    List<HateEntity> hateEntities = new ArrayList<>();
+    
+    try {
+      
+      hateEntities = hateRepository.findByBoardNumber(boardNumber);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetHateResponseDto.success(hateEntities);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> putHate(Integer boardNumber, String userId) {
+    try {
+
+      HateEntity hateEntity = hateRepository.findByUserIdAndBoardNumber(userId, boardNumber);
+      if (hateEntity == null) {
+        hateEntity = new HateEntity(userId, boardNumber);
+        hateRepository.save(hateEntity);
+      } else {
+        hateRepository.delete(hateEntity);
+      }
+
+    } catch(Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return ResponseDto.success(HttpStatus.OK);
   }
   
 }

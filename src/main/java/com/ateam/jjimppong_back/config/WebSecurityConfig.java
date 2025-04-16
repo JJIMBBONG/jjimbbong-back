@@ -65,6 +65,7 @@ public class WebSecurityConfig {
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.addAllowedOrigin("http://127.0.0.1:3000"); // React 개발 서버 도메인
+    configuration.addAllowedOrigin("http://localhost:3000");
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
