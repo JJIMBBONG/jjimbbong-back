@@ -13,7 +13,6 @@ public class PatchSignInUserRequestDto {
   private String userPassword;
   @NotBlank
   private String address;
-  @NotBlank
   private String detailAddress;
   private String profileImage;
 }
