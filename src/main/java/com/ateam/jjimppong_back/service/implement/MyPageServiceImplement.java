@@ -23,6 +23,7 @@ import com.ateam.jjimppong_back.repository.MyPageRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.MyPageService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -51,16 +52,29 @@ public class MyPageServiceImplement implements MyPageService {
   }
 
   @Override
-  public ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, String userNickname) {
+  public ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, Integer boardNumber) {
     
     try {
       MyPageEntity myPageEntity = null;
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      String writerId = boardEntity.getUserId();
+      boolean isEquals = userId.equals(writerId);
+      if (!isEquals) return ResponseDto.authFail();
+
+      UserEntity userEntity = userRepository.findByUserId(userId);
+      Integer userLevel = userEntity.getUserLevel();
+      String userNickname = userEntity.getUserNickname();
+
       Integer count = myPageRepository.countByUserId(userId);
       if (count == 0) {
-        myPageEntity = new MyPageEntity(dto, userId, userNickname);
+        myPageEntity = new MyPageEntity(userId, userNickname, userLevel, boardNumber, dto);
       } else {
         MyPageEntity preMyPageEntity = myPageRepository.findByUserId(userId);
-        myPageEntity = new MyPageEntity(dto, preMyPageEntity, userId);
+        myPageEntity = new MyPageEntity(dto, preMyPageEntity, userNickname, userId, boardNumber, userLevel);
       }
       myPageRepository.save(myPageEntity);
     } catch (Exception exception) {
@@ -101,6 +115,11 @@ public class MyPageServiceImplement implements MyPageService {
     
     try {
       UserEntity userEntity = userRepository.findByUserId(userId);
+
+      String userNickname = dto.getUserNickname();
+      boolean isExist = userRepository.existsByUserNickname(userNickname);
+      if (isExist) return ResponseDto.existUser();
+
       userEntity.patch(dto);
       userRepository.save(userEntity);
     } catch (Exception exception) {

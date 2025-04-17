@@ -30,7 +30,7 @@ public class FestivalController {
                 "&pageNo=1" +
                 "&MobileOS=ETC" +
                 "&MobileApp=MapApp" +
-                "&eventStartDate=20250401" +
+                "&eventStartDate=20250401" +    // 이벤트 시작 월 선택 4월 1일 이후
                 "&areaCode=" + areaCode +
                 "&sigunguCode=" + sigunguCode +
                 "&_type=json";

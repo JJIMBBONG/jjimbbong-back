@@ -9,6 +9,7 @@ import lombok.Getter;
 
 @Getter
 public class RecommandBoardVO {
+    private Integer boardNumber;
     private String boardWriteDate;
     private String boardAddressCategory;
     private String boardDetailCategory;
@@ -29,9 +30,10 @@ public class RecommandBoardVO {
     this.boardImage = boardEntity.getBoardImage();
   }
 
-    public RecommandBoardVO(String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
+    public RecommandBoardVO(Integer boardNumber, String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
                               String boardTitle, Integer boardViewCount, Integer boardScore,
                               String boardImage, String userNickname, Integer goodCount) {
+          this.boardNumber = boardNumber;
           this.boardWriteDate = boardWriteDate;
           this.boardAddressCategory = boardAddressCategory;
           this.boardDetailCategory = boardDetailCategory;

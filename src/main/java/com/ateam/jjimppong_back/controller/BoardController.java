@@ -8,8 +8,9 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
-import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -19,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -36,12 +37,9 @@ public class BoardController {
   @PostMapping({"", "/"})
   public ResponseEntity<ResponseDto> postBoard(
     @RequestBody @Valid PostBoardRequestDto requestBody,
-    @AuthenticationPrincipal String userId,
-    @ModelAttribute UserEntity userEntity
+    @AuthenticationPrincipal String userId
   ) {
-    String userNickname = userEntity.getUserNickname();
-    Integer userLevel = userEntity.getUserLevel();
-    ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId, userNickname, userLevel);
+    ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId);
     return response;
   }
 
@@ -87,6 +85,42 @@ public class BoardController {
     ResponseEntity<? super GetCommentResponseDto> response = boardService.getComment(boardNumber);
     return response;
   }
+
+  @GetMapping("/{boardNumber}/good")
+  public ResponseEntity<? super GetGoodResponseDto> getGood(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<? super GetGoodResponseDto> response = boardService.getGood(boardNumber);
+    return response;
+  }
+
+  @PutMapping("/{boardNumber}/good")
+  public ResponseEntity<ResponseDto> putgood(
+    @PathVariable("boardNumber") Integer boardNumber,
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.putGood(boardNumber, userId);
+    return response;
+  }
+
+  @GetMapping("/{boardNumber}/hate")
+  public ResponseEntity<? super GetHateResponseDto> getHate(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<? super GetHateResponseDto> response = boardService.getHate(boardNumber);
+    return response;
+  }
+
+  @PutMapping("/{boardNumber}/hate")
+  public ResponseEntity<ResponseDto> putHate(
+    @PathVariable("boardNumber") Integer boardNumber,
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.putHate(boardNumber, userId);
+    return response;
+  }
+
+  
 
 
 }

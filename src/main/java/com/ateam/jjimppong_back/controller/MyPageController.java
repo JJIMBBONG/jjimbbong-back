@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +37,13 @@ public class MyPageController {
     return response;
   }
 
-  @PostMapping("/my-main")
+  @PostMapping("/my-main/{boardNumber}")
   public ResponseEntity<ResponseDto> postMyPageInfo(
     @RequestBody @Valid PostMyPageInfoRequestDto requestBody,
     @AuthenticationPrincipal String userId,
-    String userNickname
+    @PathVariable("boardNumber") Integer boardNumber
   ) {
-    ResponseEntity<ResponseDto> response = myPageService.postMyPageInfo(requestBody, userId, userNickname);
+    ResponseEntity<ResponseDto> response = myPageService.postMyPageInfo(requestBody, userId, boardNumber);
     return response;
   }
 
