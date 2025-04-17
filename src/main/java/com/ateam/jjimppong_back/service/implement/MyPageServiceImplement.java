@@ -23,7 +23,6 @@ import com.ateam.jjimppong_back.repository.MyPageRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.MyPageService;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
