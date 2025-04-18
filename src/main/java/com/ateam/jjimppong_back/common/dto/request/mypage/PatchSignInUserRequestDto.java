@@ -3,8 +3,10 @@ package com.ateam.jjimppong_back.common.dto.request.mypage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class PatchSignInUserRequestDto {
   @NotBlank
   private String userNickname;

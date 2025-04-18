@@ -4,8 +4,10 @@ import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +34,10 @@ public class UserEntity {
     private String gender;
     private String profileImage;
     private String snsId;
+
+    // userEntity와 myPageEntity간의 일대일 연관관계 매핑
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MyPageEntity myPageEntity;
 
     public UserEntity(SignUpRequestDto dto){ 
         this.userId = dto.getUserId();

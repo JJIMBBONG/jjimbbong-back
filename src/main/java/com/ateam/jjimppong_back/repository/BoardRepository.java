@@ -13,14 +13,19 @@ import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
   
-
-
   boolean existsByBoardNumber(Integer boardNumber);
   BoardEntity findByBoardNumber(Integer boardNumber);
 
-
-  List<BoardEntity> findByUserIdOrderByBoardWriteDateDesc(String UserId);
+  List<BoardEntity> findByUserIdOrderByBoardWriteDateDescBoardNumberDesc(String UserId);
   List<BoardEntity> findByOrderByBoardScoreDesc();
+
+  // boardScore 합계
+  @Query(value = 
+    "SELECT COALESCE(SUM(board_score), 0) " +
+    "FROM board " +
+    "WHERE user_id = :userId ",
+    nativeQuery = true)
+    Integer sumBoardScoreByUserId(String userId);
 
   @Query(value = 
     "SELECT b.board_number AS boardNumber, " +

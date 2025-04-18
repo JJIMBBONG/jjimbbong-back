@@ -12,8 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatchBoardRequestDto {
-  @NotNull
-  private Integer boardNumber;
   @NotBlank
   private String boardAddressCategory;
   @NotNull
@@ -23,11 +21,5 @@ public class PatchBoardRequestDto {
   @NotBlank
   private String boardContent;
   private String boardAddress;
-  @NotBlank
-  private String boardWriteDate;
-  @NotNull
-  private Integer boardViewCount;
-  @NotNull
-  private Integer boardScore;
   private String boardImage;
 }
