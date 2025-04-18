@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
-import com.ateam.jjimppong_back.common.dto.request.mypage.PostMyPageInfoRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetDetailMyBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyLevelResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyPageBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
@@ -51,30 +52,21 @@ public class MyPageServiceImplement implements MyPageService {
   }
 
   @Override
-  public ResponseEntity<ResponseDto> postMyPageInfo(PostMyPageInfoRequestDto dto, String userId, Integer boardNumber) {
+  public ResponseEntity<ResponseDto> patchMyPageInfo(String userId) {
     
     try {
-      MyPageEntity myPageEntity = null;
-
-      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
-      if (!isExistBoard) return ResponseDto.noExistBoard();
-
-      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-      String writerId = boardEntity.getUserId();
-      boolean isEquals = userId.equals(writerId);
-      if (!isEquals) return ResponseDto.authFail();
-
       UserEntity userEntity = userRepository.findByUserId(userId);
-      Integer userLevel = userEntity.getUserLevel();
-      String userNickname = userEntity.getUserNickname();
-
-      Integer count = myPageRepository.countByUserId(userId);
-      if (count == 0) {
-        myPageEntity = new MyPageEntity(userId, userNickname, userLevel, boardNumber, dto);
-      } else {
-        MyPageEntity preMyPageEntity = myPageRepository.findByUserId(userId);
-        myPageEntity = new MyPageEntity(dto, preMyPageEntity, userNickname, userId, boardNumber, userLevel);
+      MyPageEntity myPageEntity = userEntity.getMyPageEntity();
+      if (myPageEntity == null) {
+        myPageEntity = new MyPageEntity();
+        myPageEntity.setUserEntity(userEntity);
+        userEntity.setMyPageEntity(myPageEntity);
       }
+
+      Integer totalScore = boardRepository.sumBoardScoreByUserId(userId);
+      myPageEntity.setUserScore(totalScore);
+      myPageEntity.setUserLevel(myPageEntity.getLevel().getNumericValue());
+      userEntity.setUserLevel(myPageEntity.getLevel().getNumericValue());
       myPageRepository.save(myPageEntity);
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -82,18 +74,46 @@ public class MyPageServiceImplement implements MyPageService {
     }
     return ResponseDto.success(HttpStatus.OK);
   }
+
+  @Override
+  public ResponseEntity<? super GetMyLevelResponseDto> getMyLevel(String userId) {
+    MyPageEntity myPageEntity = null;
+
+    try {
+      myPageEntity = myPageRepository.findByUserId(userId);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetMyLevelResponseDto.success(myPageEntity);
+  }
   
   @Override
   public ResponseEntity<? super GetMyPageBoardResponseDto> getMyPageBoard(String userId) {
     List<BoardEntity> boardEntities = new ArrayList<>();
-
+    
     try {
-      boardEntities = boardRepository.findByUserIdOrderByBoardWriteDateDesc(userId);
+      boardEntities = boardRepository.findByUserIdOrderByBoardWriteDateDescBoardNumberDesc(userId);
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
     return GetMyPageBoardResponseDto.success(boardEntities);
+  }
+  
+  @Override
+  public ResponseEntity<? super GetDetailMyBoardResponseDto> getDetailMyBoard(String userId, Integer boardNumber) {
+    BoardEntity boardEntity = null;
+
+    try {
+      boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return ResponseDto.noExistBoard();
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetDetailMyBoardResponseDto.success(boardEntity);
   }
 
   @Override
@@ -119,6 +139,9 @@ public class MyPageServiceImplement implements MyPageService {
       boolean isExist = userRepository.existsByUserNickname(userNickname);
       if (isExist) return ResponseDto.existUser();
 
+      String userPassword = dto.getUserPassword();
+      String encodedPassword = passwordEncoder.encode(userPassword);
+      dto.setUserPassword(encodedPassword);
       userEntity.patch(dto);
       userRepository.save(userEntity);
     } catch (Exception exception) {
@@ -127,6 +150,7 @@ public class MyPageServiceImplement implements MyPageService {
     }
     return ResponseDto.success(HttpStatus.OK);
   }
+
 
 
 }

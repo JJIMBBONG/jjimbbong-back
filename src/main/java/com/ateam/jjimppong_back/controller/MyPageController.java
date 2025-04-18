@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
-import com.ateam.jjimppong_back.common.dto.request.mypage.PostMyPageInfoRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetDetailMyBoardResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyLevelResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyPageBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
 import com.ateam.jjimppong_back.service.MyPageService;
@@ -37,13 +38,19 @@ public class MyPageController {
     return response;
   }
 
-  @PostMapping("/my-main/{boardNumber}")
-  public ResponseEntity<ResponseDto> postMyPageInfo(
-    @RequestBody @Valid PostMyPageInfoRequestDto requestBody,
-    @AuthenticationPrincipal String userId,
-    @PathVariable("boardNumber") Integer boardNumber
+  @PatchMapping("/my-main")
+  public ResponseEntity<ResponseDto> patchMyPageInfo(
+    @AuthenticationPrincipal String userId
   ) {
-    ResponseEntity<ResponseDto> response = myPageService.postMyPageInfo(requestBody, userId, boardNumber);
+    ResponseEntity<ResponseDto> response = myPageService.patchMyPageInfo(userId);
+    return response;
+  }
+
+  @GetMapping("/my-main/level")
+  public ResponseEntity<? super GetMyLevelResponseDto> getMyLevel(
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<? super GetMyLevelResponseDto> response = myPageService.getMyLevel(userId);
     return response;
   }
 
@@ -52,6 +59,15 @@ public class MyPageController {
     @AuthenticationPrincipal String userId
   ) {
     ResponseEntity<? super GetMyPageBoardResponseDto> response = myPageService.getMyPageBoard(userId);
+    return response;
+  }
+
+  @GetMapping("/my-main/{boardNumber}")
+  public ResponseEntity<? super GetDetailMyBoardResponseDto> getDetailMyBoard(
+    @AuthenticationPrincipal String userId,
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<? super GetDetailMyBoardResponseDto> response = myPageService.getDetailMyBoard(userId, boardNumber);
     return response;
   }
 

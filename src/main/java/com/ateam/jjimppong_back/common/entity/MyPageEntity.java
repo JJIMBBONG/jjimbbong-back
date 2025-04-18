@@ -1,9 +1,11 @@
 package com.ateam.jjimppong_back.common.entity;
 
-import com.ateam.jjimppong_back.common.dto.request.mypage.PostMyPageInfoRequestDto;
+import com.ateam.jjimppong_back.common.util.UserLevelUtil;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,23 +22,16 @@ public class MyPageEntity {
   @Id
   private String userId;
   private String userNickname;
-  private Integer boardNumber;
+  // private Integer boardNumber;
   private Integer userLevel;
   private Integer userScore;
 
-  public MyPageEntity(String userId, String userNickname, Integer userLevel, Integer boardNumber, PostMyPageInfoRequestDto dto) {
-    this.userId = userId;
-    this.userNickname = userNickname;
-    this.boardNumber = boardNumber;
-    this.userLevel = userLevel;
-    this.userScore = dto.getUserScore();
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private UserEntity userEntity;
+
+  public UserLevelUtil getLevel() {
+    return UserLevelUtil.getUserLevel(this.userScore);
   }
 
-  public MyPageEntity(PostMyPageInfoRequestDto dto, MyPageEntity preEntity, String userNickname, String userId, Integer boardNumber, Integer userLevel) {
-    this.userId = userId;
-    this.userNickname = userNickname;
-    this.boardNumber = boardNumber;
-    this.userLevel = userLevel;
-    this.userScore = preEntity.getUserScore() + dto.getUserScore();
-  }
 }

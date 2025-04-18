@@ -32,6 +32,7 @@ import com.ateam.jjimppong_back.repository.GoodRepository;
 import com.ateam.jjimppong_back.repository.HateRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
+import com.ateam.jjimppong_back.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +45,7 @@ public class BoardServiceImplement implements BoardService {
   private final CommentRepository commentRepository; 
   private final GoodRepository goodRepository;
   private final HateRepository hateRepository;
+  private final MyPageService myPageService;
 
   @Override
   public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId) {
@@ -53,9 +55,16 @@ public class BoardServiceImplement implements BoardService {
       UserEntity userEntity = userRepository.findByUserId(userId);
       String userNickname = userEntity.getUserNickname();
       Integer userLevel = userEntity.getUserLevel();
+      // 계정 점수 test 용 게시글 작성 점수 //
+      Integer defaultScore = 60;
 
       BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
+      // 계정 점수 test 용 게시글 점수 추가 작업 //
+      boardEntity.setBoardScore(defaultScore);
       boardRepository.save(boardEntity);
+      
+      // 게시글 작성 시 게시글 작성 점수가 생겨 마이페이지 테이블에 게시글 점수만큼 계정 점수가 수정되고 추가 게시글을 작성하면 합산한 점수를 계정 점수에 수정 - 계정 점수 test 용//
+      myPageService.patchMyPageInfo(userId);
       
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -193,6 +202,10 @@ public class BoardServiceImplement implements BoardService {
       if (!isWriter) return ResponseDto.noPermission();
 
       boardRepository.delete(boardEntity);
+
+      // 게시글이 삭제되면 해당 게시글의 점수가 계정 점수에서 마이너스
+      myPageService.patchMyPageInfo(userId);
+
       return ResponseDto.success(HttpStatus.NO_CONTENT);
       
     } catch (Exception exception) {
