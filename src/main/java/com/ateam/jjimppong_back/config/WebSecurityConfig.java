@@ -58,8 +58,8 @@ public class WebSecurityConfig {
     // description: 인가 설정 //
     .authorizeHttpRequests(request -> request
         .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
-        .requestMatchers("/file/**", "/api/v1/open-ai").permitAll()
-        .requestMatchers("/api/v1/diary", "/api/v1/diary/**").authenticated()
+        .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
+        .requestMatchers("/api/v1/board", "/api/v1/board/**").authenticated()
         .anyRequest().authenticated()
     )
     // description: Oauth 로그인 적용 //
