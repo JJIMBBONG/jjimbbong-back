@@ -43,7 +43,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     List<BoardProjection> findByUserIdOrderByBoardNumberDesc(String userId);
 
   @Query(value =
-        "SELECT b.board_write_date AS boardWriteDate, " +
+        "SELECT b.board_number As boardNumber, " +
+        "       b.board_write_date AS boardWriteDate, " +
         "       b.board_address_category AS boardAddressCategory, " +
         "       b.board_detail_category AS boardDetailCategory, " +
         "       b.board_title AS boardTitle, " +
