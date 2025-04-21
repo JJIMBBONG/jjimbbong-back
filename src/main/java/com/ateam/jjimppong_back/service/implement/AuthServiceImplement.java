@@ -239,7 +239,7 @@ public class AuthServiceImplement implements AuthService{
             MyPageEntity myPageEntity = new MyPageEntity();
             myPageEntity.setUserId(userId);
             myPageEntity.setUserNickname(userNickname);
-            myPageEntity.setUserLevel(0);
+            myPageEntity.setUserLevel(1);
             myPageEntity.setUserScore(0);
             // 양방향 관계 설정
             userEntity.setMyPageEntity(myPageEntity);

@@ -58,5 +58,6 @@ public class UserEntity {
         this.userPassword = dto.getUserPassword();
         this.address = dto.getAddress();
         this.detailAddress = dto.getDetailAddress();
+        this.profileImage = dto.getProfileImage();
     }
 }
