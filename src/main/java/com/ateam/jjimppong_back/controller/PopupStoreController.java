@@ -17,7 +17,7 @@ public class PopupStoreController {
     private final PopupStoreRepository popupStoreRepository;
     
     public PopupStoreController(PopupStoreRepository popupStoreRepository) {
-        this.popupStoreRepository = popupStoreRepository;
+        this.popupStoreRepository = popupStoreRepository;   
     }
 
     @GetMapping()

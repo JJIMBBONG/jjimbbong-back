@@ -25,7 +25,8 @@ public class PopupStoreEntity {
     
     private String popupTitle;
     private String region;
-    private LocalDate popupDate;
+    private LocalDate popupStartDate;
+    private LocalDate popupEndDate;
     private String popupImage;
 
 }
