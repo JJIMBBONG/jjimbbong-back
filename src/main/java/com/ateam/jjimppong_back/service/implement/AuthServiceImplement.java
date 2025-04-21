@@ -119,6 +119,35 @@ public class AuthServiceImplement implements AuthService{
     }
 
     @Override
+    public ResponseEntity<ResponseDto> emailAuthId(EmailAuthRequestDto dto) {
+
+        try{
+
+            String userEmail = dto.getUserEmail();
+
+            // 생성한 인증번호 를 authNumber에 저장
+            String authNumber = EmailAuthNumberUtil.createCodeNumber();
+
+            EmailAuthEntity emailAuthEntity = new EmailAuthEntity(userEmail, authNumber);
+            // 저장소에 이메일과, 인증번호 저장
+            emailAuthNumberRepository.save(emailAuthEntity);
+
+            // 메일 전송 기능 사용
+            mailProvider.mailAuthSend(userEmail, authNumber);
+
+        } catch(MessagingException exception){ 
+            exception.printStackTrace();
+            return ResponseDto.mailSendFail();
+        } catch(Exception exception){ 
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success(HttpStatus.OK);
+
+    }
+
+    @Override
     public ResponseEntity<ResponseDto> emailAuthCheck(EmailAuthCheckRequestDto dto) {
 
         try { 

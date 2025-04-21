@@ -19,6 +19,7 @@ public interface AuthService {
     ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto);
     ResponseEntity<ResponseDto> nicknameCheck(NicknameCheckRequestDto dto);
     ResponseEntity<ResponseDto> emailAuth(EmailAuthRequestDto dto);
+    ResponseEntity<ResponseDto> emailAuthId(EmailAuthRequestDto dto);
     ResponseEntity<ResponseDto> emailAuthCheck(EmailAuthCheckRequestDto dto);
     ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto);
     ResponseEntity<? super IdSearchResponseDto> idSearch(IdSearchRequestDto dto);
