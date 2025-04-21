@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.vo.BoardProjection;
+import com.ateam.jjimppong_back.common.vo.FilteredBoardProjection;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 
 @Repository
@@ -63,7 +65,77 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
         "GROUP BY b.board_number " +
         "ORDER BY b.board_score DESC",
         nativeQuery = true)
-    List<RecommandBoardProjection> findAllWithLikeCount();
+  List<RecommandBoardProjection> findAllWithLikeCount();
+
+
+  // 최신순으로 게시글 나열 //
+  @Query(value =
+    "SELECT " +
+    "  b.board_number AS boardNumber, " +
+    "  b.board_write_date AS boardWriteDate, " +
+    "  b.board_address_category AS boardAddressCategory, " +
+    "  b.board_detail_category AS boardDetailCategory, " +
+    "  b.board_title AS boardTitle, " +
+    "  b.board_view_count AS boardViewCount, " +
+    "  b.board_score AS boardScore, " +
+    "  b.board_image AS boardImage, " +
+    "  b.user_nickname AS userNickname, " +
+    "  COUNT(DISTINCT g.good_number) AS goodCount, " +
+    "  COUNT(DISTINCT c.comment_number) AS commentCount " +
+    "FROM board b " +
+    "LEFT JOIN good g ON b.board_number = g.board_number " +
+    "LEFT JOIN comment c ON b.board_number = c.board_number " +
+    "GROUP BY b.board_number " +
+    "ORDER BY b.board_write_date DESC",
+    nativeQuery = true)
+    List<FilteredBoardProjection> findAllWithOrderByWriteDate();
+
+    
+    // 조회수 순 //
+    @Query(value =
+    "SELECT " +
+    "  b.board_number AS boardNumber, " +
+    "  b.board_write_date AS boardWriteDate, " +
+    "  b.board_address_category AS boardAddressCategory, " +
+    "  b.board_detail_category AS boardDetailCategory, " +
+    "  b.board_title AS boardTitle, " +
+    "  b.board_view_count AS boardViewCount, " +
+    "  b.board_score AS boardScore, " +
+    "  b.board_image AS boardImage, " +
+    "  b.user_nickname AS userNickname, " +
+    "  COUNT(DISTINCT g.good_number) AS goodCount, " +
+    "  COUNT(DISTINCT c.comment_number) AS commentCount " +
+    "FROM board b " +
+    "LEFT JOIN good g ON b.board_number = g.board_number " +
+    "LEFT JOIN comment c ON b.board_number = c.board_number " +
+    "GROUP BY b.board_number " +
+    "ORDER BY b.board_view_count DESC",
+    nativeQuery = true)
+    List<FilteredBoardProjection> findAllWithOrderByViewCount();
+
+
+    // 좋아요 순 //
+
+    @Query(value =
+    "SELECT " +
+    "  b.board_number AS boardNumber, " +
+    "  b.board_write_date AS boardWriteDate, " +
+    "  b.board_address_category AS boardAddressCategory, " +
+    "  b.board_detail_category AS boardDetailCategory, " +
+    "  b.board_title AS boardTitle, " +
+    "  b.board_view_count AS boardViewCount, " +
+    "  b.board_score AS boardScore, " +
+    "  b.board_image AS boardImage, " +
+    "  b.user_nickname AS userNickname, " +
+    "  COUNT(DISTINCT g.good_number) AS goodCount, " +
+    "  COUNT(DISTINCT c.comment_number) AS commentCount " +
+    "FROM board b " +
+    "LEFT JOIN good g ON b.board_number = g.board_number " +
+    "LEFT JOIN comment c ON b.board_number = c.board_number " +
+    "GROUP BY b.board_number " +
+    "ORDER BY COUNT(DISTINCT g.good_number) DESC",
+    nativeQuery = true)
+    List<FilteredBoardProjection> findAllWithOrderByGoodCount();
 
 
 

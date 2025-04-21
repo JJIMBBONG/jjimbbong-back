@@ -13,6 +13,7 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetFilteredBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
@@ -24,6 +25,8 @@ import com.ateam.jjimppong_back.common.entity.HateEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.vo.BoardProjection;
 import com.ateam.jjimppong_back.common.vo.BoardVO;
+import com.ateam.jjimppong_back.common.vo.FilteredBoardProjection;
+import com.ateam.jjimppong_back.common.vo.FilteredBoardVO;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardVO;
 import com.ateam.jjimppong_back.repository.BoardRepository;
@@ -162,6 +165,108 @@ public class BoardServiceImplement implements BoardService {
 
     return GetRecommandBoardResponseDto.success(voList);
   }
+
+  @Override
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate() {
+
+        List<FilteredBoardVO> voList = new ArrayList<>();
+
+        try {
+
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByWriteDate();
+          for (FilteredBoardProjection p : projections){
+            FilteredBoardVO vo = new FilteredBoardVO(
+              p.getBoardNumber(),
+              p.getBoardWriteDate(),
+              p.getBoardAddressCategory(),
+              p.getBoardDetailCategory(),
+              p.getBoardTitle(),
+              p.getBoardViewCount(),
+              p.getBoardScore(),
+              p.getBoardImage(),
+              p.getUserNickname(),
+              p.getUserLevel(),
+              p.getGoodCount(),
+              p.getCommentCount()
+            );
+            voList.add(vo);
+          }
+          
+        } catch (Exception exception) {
+          exception.printStackTrace();
+          return ResponseDto.databaseError();
+        }
+
+        return GetFilteredBoardResponseDto.success(voList);
+  }
+
+  
+  @Override
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardViewCount() {
+    List<FilteredBoardVO> voList = new ArrayList<>();
+
+        try {
+
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByViewCount();
+          for (FilteredBoardProjection p : projections){
+            FilteredBoardVO vo = new FilteredBoardVO(
+              p.getBoardNumber(),
+              p.getBoardWriteDate(),
+              p.getBoardAddressCategory(),
+              p.getBoardDetailCategory(),
+              p.getBoardTitle(),
+              p.getBoardViewCount(),
+              p.getBoardScore(),
+              p.getBoardImage(),
+              p.getUserNickname(),
+              p.getUserLevel(),
+              p.getGoodCount(),
+              p.getCommentCount()
+            );
+            voList.add(vo);
+          }
+          
+        } catch (Exception exception) {
+          exception.printStackTrace();
+          return ResponseDto.databaseError();
+        }
+
+        return GetFilteredBoardResponseDto.success(voList);
+  }
+
+  @Override
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardGoodCount() {
+    List<FilteredBoardVO> voList = new ArrayList<>();
+
+        try {
+
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByGoodCount();
+          for (FilteredBoardProjection p : projections){
+            FilteredBoardVO vo = new FilteredBoardVO(
+              p.getBoardNumber(),
+              p.getBoardWriteDate(),
+              p.getBoardAddressCategory(),
+              p.getBoardDetailCategory(),
+              p.getBoardTitle(),
+              p.getBoardViewCount(),
+              p.getBoardScore(),
+              p.getBoardImage(),
+              p.getUserNickname(),
+              p.getUserLevel(),
+              p.getGoodCount(),
+              p.getCommentCount()
+            );
+            voList.add(vo);
+          }
+          
+        } catch (Exception exception) {
+          exception.printStackTrace();
+          return ResponseDto.databaseError();
+        }
+
+        return GetFilteredBoardResponseDto.success(voList);
+  }
+
 
 
 
@@ -324,5 +429,7 @@ public class BoardServiceImplement implements BoardService {
 
     return ResponseDto.success(HttpStatus.OK);
   }
+
+  
   
 }
