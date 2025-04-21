@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PostNicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetDetailMyBoardResponseDto;
@@ -40,10 +41,24 @@ public class MyPageServiceImplement implements MyPageService {
     
     try {
       UserEntity userEntity = userRepository.findByUserId(userId);
-      String inputPassword = dto.getUserPassword();
+      String inputPassword = dto.getInputPassword();
       String encodedPassword = userEntity.getUserPassword();
       boolean isMatch = passwordEncoder.matches(inputPassword, encodedPassword);
       if (!isMatch) return ResponseDto.passwordNotMatched();
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> updateNicknameCheck(PostNicknameCheckRequestDto dto, String userId) {
+    
+    try {
+      String updateNickname = dto.getUpdateNickname();
+      boolean isExistNickname = userRepository.existsByUserNickname(updateNickname);
+      if (isExistNickname) return ResponseDto.existUser();
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
@@ -150,7 +165,5 @@ public class MyPageServiceImplement implements MyPageService {
     }
     return ResponseDto.success(HttpStatus.OK);
   }
-
-
 
 }

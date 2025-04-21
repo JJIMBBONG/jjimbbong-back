@@ -29,7 +29,7 @@ public class FileController {
     return url;
   }
 
-  @GetMapping(value = "/{fileNmae}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+  @GetMapping(value = "/{fileName}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
   public Resource getImageFile(
     @PathVariable("fileName") String fileName
   ) {

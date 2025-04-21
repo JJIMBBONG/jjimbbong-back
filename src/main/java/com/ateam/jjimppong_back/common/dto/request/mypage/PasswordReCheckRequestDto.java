@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 public class PasswordReCheckRequestDto {
   @NotBlank
-  private String userPassword;
+  private String inputPassword;
 }
