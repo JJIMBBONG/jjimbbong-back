@@ -3,12 +3,12 @@ package com.ateam.jjimppong_back.common.vo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ateam.jjimppong_back.common.entity.BoardEntity;
+
 
 import lombok.Getter;
 
 @Getter
-public class RecommandBoardVO {
+public class FilteredBoardVO {
     private Integer boardNumber;
     private String boardWriteDate;
     private String boardAddressCategory;
@@ -19,20 +19,13 @@ public class RecommandBoardVO {
     private String boardImage;
     private String userNickname;
     private Integer goodCount;
+    private Integer commentCount;
+    private String userLevel;
 
-  //   private RecommandBoardVO(BoardEntity boardEntity) {
-  //   this.boardWriteDate = boardEntity.getBoardWriteDate();
-  //   this.boardAddressCategory = boardEntity.getBoardAddressCategory();
-  //   this.boardDetailCategory = boardEntity.getBoardDetailCategory();
-  //   this.boardTitle = boardEntity.getBoardTitle();
-  //   this.boardViewCount = boardEntity.getBoardViewCount();
-  //   this.boardScore = boardViewCount;
-  //   this.boardImage = boardEntity.getBoardImage();
-  // }
-
-    public RecommandBoardVO(Integer boardNumber, String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
-                            String boardTitle, Integer boardViewCount, Integer boardScore,
-                            String boardImage, String userNickname, Integer goodCount) {
+    public FilteredBoardVO(Integer boardNumber, String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
+    String boardTitle, Integer boardViewCount, Integer boardScore, String boardImage, String userNickname, String userLevel,
+    Integer goodCount, Integer commentCount 
+    ){
         this.boardNumber = boardNumber;
         this.boardWriteDate = boardWriteDate;
         this.boardAddressCategory = boardAddressCategory;
@@ -43,12 +36,14 @@ public class RecommandBoardVO {
         this.boardImage = boardImage;
         this.userNickname = userNickname;
         this.goodCount = goodCount;
+        this.commentCount = commentCount;
+        this.userLevel = userLevel;
     }
 
-    public static List<RecommandBoardVO> getList(List<RecommandBoardProjection> projections) {
-        List<RecommandBoardVO> list = new ArrayList<>();
-        for (RecommandBoardProjection p : projections) {
-            RecommandBoardVO vo = new RecommandBoardVO(
+    public static List<FilteredBoardVO> getList(List<FilteredBoardProjection> projections) {
+        List<FilteredBoardVO> list = new ArrayList<>();
+        for (FilteredBoardProjection p : projections) {
+            FilteredBoardVO vo = new FilteredBoardVO(
                 p.getBoardNumber(),
                 p.getBoardWriteDate(),
                 p.getBoardAddressCategory(),
@@ -58,10 +53,13 @@ public class RecommandBoardVO {
                 p.getBoardScore(),
                 p.getBoardImage(),
                 p.getUserNickname(),
-                p.getGoodCount()  // goodCount로 사용
+                p.getUserLevel(),
+                p.getGoodCount(),
+                p.getCommentCount()
             );
             list.add(vo);
         }
         return list;
     }
+    
 }
