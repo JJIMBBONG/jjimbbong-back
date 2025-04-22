@@ -15,7 +15,7 @@ public interface MyPageService {
   ResponseEntity<ResponseDto> passwordReCheck(PasswordReCheckRequestDto dto, String userId);
   ResponseEntity<ResponseDto> updateNicknameCheck(PostNicknameCheckRequestDto dto, String userId);
 
-  ResponseEntity<ResponseDto> patchMyPageInfo(String userId);
+  ResponseEntity<ResponseDto> updateMyPageInfo(String userId);
 
   ResponseEntity<? super GetMyLevelResponseDto> getMyLevel(String userId);
   ResponseEntity<? super GetMyPageBoardResponseDto> getMyPageBoard(String userId);
