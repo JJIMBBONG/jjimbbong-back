@@ -21,7 +21,7 @@ public class GetRecommandBoardResponseDto extends ResponseDto{
 
   private GetRecommandBoardResponseDto(List<RecommandBoardVO> voList) {
     this.boards = voList;
-}
+  }
 
   // public static ResponseEntity<GetRecommandBoardResponseDto> success(List<BoardEntity> boardEntities) {
   //   GetRecommandBoardResponseDto body = new GetRecommandBoardResponseDto(boardEntities);
@@ -31,6 +31,6 @@ public class GetRecommandBoardResponseDto extends ResponseDto{
   public static ResponseEntity<GetRecommandBoardResponseDto> success(List<RecommandBoardVO> voList) {
     GetRecommandBoardResponseDto body = new GetRecommandBoardResponseDto(voList);
     return ResponseEntity.status(HttpStatus.OK).body(body);
-}
+  }
     
 }

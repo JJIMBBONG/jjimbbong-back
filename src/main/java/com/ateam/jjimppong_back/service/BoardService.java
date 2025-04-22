@@ -8,6 +8,7 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetFilteredBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
@@ -29,4 +30,8 @@ public interface BoardService {
 
   ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber);
   ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String userId);
+
+  ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate();
+  ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardViewCount();
+  ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardGoodCount();
 }

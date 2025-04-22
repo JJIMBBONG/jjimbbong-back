@@ -8,6 +8,7 @@ import com.ateam.jjimppong_back.common.dto.request.board.PostBoardRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.board.GetFilteredBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
@@ -120,7 +121,24 @@ public class BoardController {
     return response;
   }
 
-  
+  @GetMapping("/write-date")
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate(
+  ) {
+    ResponseEntity<? super GetFilteredBoardResponseDto> response = boardService.getFilteredBoardWriteDate();
+    return response;
+  }
 
+  @GetMapping("/view-count")
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardViewCount(
+  ) {
+    ResponseEntity<? super GetFilteredBoardResponseDto> response = boardService.getFilteredBoardViewCount();
+    return response;
+  }
 
+  @GetMapping("/good-count")
+  public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardGoodCount(
+  ) {
+    ResponseEntity<? super GetFilteredBoardResponseDto> response = boardService.getFilteredBoardGoodCount();
+    return response;
+  }
 }
