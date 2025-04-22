@@ -67,7 +67,7 @@ public class MyPageServiceImplement implements MyPageService {
   }
 
   @Override
-  public ResponseEntity<ResponseDto> patchMyPageInfo(String userId) {
+  public ResponseEntity<ResponseDto> updateMyPageInfo(String userId) {
     
     try {
       UserEntity userEntity = userRepository.findByUserId(userId);

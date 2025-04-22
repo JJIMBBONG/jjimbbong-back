@@ -64,7 +64,7 @@ public class BoardServiceImplement implements BoardService {
       boardRepository.save(boardEntity);
       
       // 게시글 작성 시 게시글 작성 점수가 생겨 마이페이지 테이블에 게시글 점수만큼 계정 점수가 수정되고 추가 게시글을 작성하면 합산한 점수를 계정 점수에 수정 - 계정 점수 test 용//
-      myPageService.patchMyPageInfo(userId);
+      myPageService.updateMyPageInfo(userId);
       
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -204,7 +204,7 @@ public class BoardServiceImplement implements BoardService {
       boardRepository.delete(boardEntity);
 
       // 게시글이 삭제되면 해당 게시글의 점수가 계정 점수에서 마이너스
-      myPageService.patchMyPageInfo(userId);
+      myPageService.updateMyPageInfo(userId);
 
       return ResponseDto.success(HttpStatus.NO_CONTENT);
       
