@@ -31,7 +31,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String registration = userRequest.getClientRegistration().getClientName().toUpperCase(); // joinType (e.g., KAKAO)
-        String snsId = getSnsId(oAuth2User, registration);
+        String snsId = getSnsId(oAuth2User, registration);  // SNS ID 추출
 
         Map<String, Object> attributes = new HashMap<>();
         CustomOAuth2User customOAuth2User;
@@ -65,17 +65,29 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         return customOAuth2User;
     }
 
-    // SNS에서 받은 ID 추출
+    // SNS에서 받은 ID 추출 및 DB 저장
     private String getSnsId(OAuth2User oAuth2User, String registration) {
         String snsId = null;
+        String joinType = null;
 
+        // SNS 종류에 따라 처리
         if (registration.equals("KAKAO")) {
-            snsId = oAuth2User.getName(); // 카카오는 기본적으로 ID를 name()으로 가져옴
+            snsId = oAuth2User.getName();  // KAKAO는 기본적으로 getName()으로 ID 제공
+            joinType = "KAKAO";
         } else if (registration.equals("NAVER")) {
             Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttributes().get("response");
-            snsId = (String) response.get("id");
+            snsId = (String) response.get("id");  // NAVER는 response.id로 ID 제공
+            joinType = "NAVER";
         }
 
-        return snsId;
+        // SnsUserEntity 객체 생성
+        SnsUserEntity snsUserEntity = new SnsUserEntity();
+        snsUserEntity.setSnsId(snsId);
+        snsUserEntity.setJoinType(joinType);
+
+        // snsUserEntity 객체를 데이터베이스에 저장
+        snsUserRepository.save(snsUserEntity);
+
+        return snsId;  // snsId 반환
     }
 }
