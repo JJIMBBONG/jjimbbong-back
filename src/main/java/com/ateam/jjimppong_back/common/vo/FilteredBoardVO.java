@@ -35,9 +35,9 @@ public class FilteredBoardVO {
         this.boardScore = boardScore;
         this.boardImage = boardImage;
         this.userNickname = userNickname;
+        this.userLevel = userLevel;
         this.goodCount = goodCount;
         this.commentCount = commentCount;
-        this.userLevel = userLevel;
     }
 
     public static List<FilteredBoardVO> getList(List<FilteredBoardProjection> projections) {
