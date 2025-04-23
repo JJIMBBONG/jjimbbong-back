@@ -6,8 +6,7 @@ public enum UserLevelUtil {
   B(4),
   C(3),
   D(2),
-  E(1),
-  F(0);
+  E(1);
 
   private final Integer numericValue;
 
@@ -20,11 +19,10 @@ public enum UserLevelUtil {
   }
 
   public static UserLevelUtil getUserLevel(Integer userScore) {
-    if (userScore >= 500) return A;
-    else if (userScore >= 400) return B;
-    else if (userScore >= 300) return C;
-    else if (userScore >= 200) return D;
-    else if (userScore >= 100) return E;
-    else return F;
+    if (userScore >= 400) return A;
+    else if (userScore >= 300) return B;
+    else if (userScore >= 200) return C;
+    else if (userScore >= 100) return D;
+    else return E;
   }
 }
