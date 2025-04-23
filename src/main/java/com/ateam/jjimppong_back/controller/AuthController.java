@@ -12,10 +12,13 @@ import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.service.AuthService;
+import com.ateam.jjimppong_back.service.SnsUserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final AuthService authService;
+    private final SnsUserService snsUserService;
 
     @PostMapping("/id-check")
     public ResponseEntity<ResponseDto> idCheck(
@@ -77,6 +81,12 @@ public class AuthController {
         return response;
     }
 
+    // SNS 로그인 후 추가 정보 입력을 통한 회원가입 처리
+    @PostMapping("/sns-sign-up")
+    public ResponseEntity<ResponseDto> snsSignUp(@RequestBody @Valid SnsSignUpRequestDto requestBody) {
+        return authService.snsSignUp(requestBody, requestBody.getSnsId(), requestBody.getJoinType());
+    }
+
     @PostMapping("/sign-in")
     ResponseEntity<? super SignInResponseDto> signIn(
         @RequestBody @Valid SignInRequestDto requestBody
@@ -100,5 +110,12 @@ public class AuthController {
         ResponseEntity<ResponseDto> response = authService.passwordReset(requestBody);
         return response;
     }
-    
+
+    // SNS 로그인 후 정보 저장
+    @PostMapping("/sns-save")
+    ResponseEntity<ResponseDto> saveSnsUser(@RequestBody SnsUserRequestDto requestBody) {
+        ResponseEntity<ResponseDto> response = snsUserService.saveSnsUser(requestBody.getSnsId(), requestBody.getJoinType(), requestBody.getUserId());
+        return response;
+    }
+
 }
