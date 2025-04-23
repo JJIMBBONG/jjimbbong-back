@@ -59,6 +59,7 @@ public class WebSecurityConfig {
     .authorizeHttpRequests(request -> request
         .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
         .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
+        .requestMatchers("/api/v1/festivals/**", "/festivals/**", "/popup-stores/**", "/restaurants/**").permitAll()
         .requestMatchers("/api/v1/auth/password-reset").permitAll()
         .requestMatchers("/api/v1/board", "/api/v1/board/**").authenticated()
         .anyRequest().authenticated()
@@ -78,7 +79,11 @@ public class WebSecurityConfig {
     )
 
     // description: Jwt Authentication Filter 등록 //
-    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    // Jwt 필터가 인증 없이 접근할 수 있는 경로에 대해서는 필터를 적용하지 않도록 설정 //
+    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+    .exceptionHandling(exception -> exception
+        .authenticationEntryPoint(new AuthenticationFailEntryPoint())
+    );
 
   return security.build();
 }
@@ -94,6 +99,7 @@ public class WebSecurityConfig {
     configuration.addAllowedOrigin("http://localhost:3000"); // 추가 허용
     configuration.setAllowCredentials(true);
 
+    configuration.addExposedHeader("Authorization");
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
