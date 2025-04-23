@@ -59,8 +59,8 @@ public class WebSecurityConfig {
     .authorizeHttpRequests(request -> request
         .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
         .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
-        .requestMatchers("api/v1/auth/password-reset").permitAll()
-        .requestMatchers("/api/v1/board", "/api/v1/board/**").permitAll()
+        .requestMatchers("/api/v1/auth/password-reset").permitAll()
+        .requestMatchers("/api/v1/board", "/api/v1/board/**").authenticated()
         .anyRequest().authenticated()
     )
     // description: Oauth 로그인 적용 //

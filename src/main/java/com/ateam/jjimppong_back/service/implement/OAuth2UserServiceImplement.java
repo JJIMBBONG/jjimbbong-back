@@ -2,6 +2,7 @@ package com.ateam.jjimppong_back.service.implement;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -9,70 +10,72 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ateam.jjimppong_back.common.entity.SnsUserEntity;
 import com.ateam.jjimppong_back.common.entity.CustomOAuth2User;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.provider.JwtProvider;
+import com.ateam.jjimppong_back.repository.SnsUserRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
-  private final UserRepository userRepository;
-  private final JwtProvider jwtProvider;
-  
-  @Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-    OAuth2User oAuth2User = super.loadUser(userRequest);
-    String registration = userRequest.getClientRegistration().getClientName().toUpperCase();
+    private final UserRepository userRepository;
+    private final SnsUserRepository snsUserRepository;
+    private final JwtProvider jwtProvider;
 
-    // try {
-    //   System.out.println("==================================================");
-    //   System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
-    //   System.out.println(oAuth2User.getName());
-    //   System.out.println("==================================================");
-    // } catch (Exception exception) {
-    //   exception.printStackTrace();
-    // }
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
 
-    String snsId = getSnsId(oAuth2User, registration);
-    UserEntity userEntity = userRepository.findByJoinTypeAndSnsId(registration, snsId);
+        String registration = userRequest.getClientRegistration().getClientName().toUpperCase(); // joinType (e.g., KAKAO)
+        String snsId = getSnsId(oAuth2User, registration);
 
-    CustomOAuth2User customOAuth2User = null;
-    Map<String, Object> attributes = new HashMap<>();
+        Map<String, Object> attributes = new HashMap<>();
+        CustomOAuth2User customOAuth2User;
 
-    if (userEntity == null) {
-      attributes.put("snsId", snsId);
-      attributes.put("joinType", registration);
+        // SNS 로그인 정보 조회
+        Optional<SnsUserEntity> optionalSnsUser = snsUserRepository.findBySnsIdAndJoinType(snsId, registration);
 
-      customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
-    } else {
-      String userId = userEntity.getUserId();
-      String accessToken = jwtProvider.create(userId);
-      attributes.put("accessToken", accessToken);
+        if (optionalSnsUser.isEmpty()) {
+            // SNS 사용자 정보가 DB에 없는 경우 → 회원가입이 필요함
+            attributes.put("snsId", snsId);
+            attributes.put("joinType", registration);
+            customOAuth2User = new CustomOAuth2User(snsId, attributes, false); // 회원가입 필요
+        } else {
+            SnsUserEntity snsUser = optionalSnsUser.get();
+            UserEntity userEntity = snsUser.getUserEntity();
 
-      customOAuth2User = new CustomOAuth2User(userId, attributes, true);
+            if (userEntity == null) {
+                // 아직 회원가입 안된 경우 -> 추가정보 입력
+                attributes.put("snsId", snsId);
+                attributes.put("joinType", registration);
+                customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
+            } else {
+                // 기존 유저로 로그인 처리
+                String userId = userEntity.getUserId();
+                String accessToken = jwtProvider.create(userId);
+                attributes.put("accessToken", accessToken);
+                customOAuth2User = new CustomOAuth2User(userId, attributes, true); // 로그인 완료
+            }
+        }
+
+        return customOAuth2User;
     }
 
-    return customOAuth2User;
-  }
+    // SNS에서 받은 ID 추출
+    private String getSnsId(OAuth2User oAuth2User, String registration) {
+        String snsId = null;
 
-  // function: 결과로 받은 유저 정보에서 ragistration에 따라 id 값을 추출하는 함수 //
-  private String getSnsId(OAuth2User oAuth2User, String registration) {
+        if (registration.equals("KAKAO")) {
+            snsId = oAuth2User.getName(); // 카카오는 기본적으로 ID를 name()으로 가져옴
+        } else if (registration.equals("NAVER")) {
+            Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+            snsId = (String) response.get("id");
+        }
 
-    String snsId = null;
-
-    if (registration.equals("KAKAO")) {
-      snsId = oAuth2User.getName();
+        return snsId;
     }
-    if (registration.equals("NAVER")) {
-      Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
-      snsId = response.get("id");
-    }
-
-    return snsId;
-
-  }
 }
