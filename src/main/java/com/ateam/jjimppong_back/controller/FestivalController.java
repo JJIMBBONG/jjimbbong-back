@@ -1,16 +1,28 @@
 package com.ateam.jjimppong_back.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.ateam.jjimppong_back.common.dto.response.FestivalDTO;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 
-import reactor.core.publisher.Mono;
-
-
-// 백엔드 작업 다 끝나면 연동 예정
 @RestController
 @RequestMapping("/api")
 public class FestivalController {   
@@ -18,10 +30,18 @@ public class FestivalController {
     @Value("${tourapi.service-key}")
     private String serviceKey;
 
+    @Value("${jwt.secret}")
+    private String secretKey;
+
     private final WebClient webClient = WebClient.create();
 
     @GetMapping("/festivals")
-    public Mono<String> getFestivals(@RequestParam String areaCode, @RequestParam String sigunguCode) {
+    public List<FestivalDTO> getFestivals(@RequestParam String areaCode, @RequestParam String sigunguCode, @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+
+        validateToken(token);
+
         String apiUrl = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
 
         String requestUrl = apiUrl + 
@@ -36,19 +56,54 @@ public class FestivalController {
                 "&_type=json";
 
         System.out.println("호출 API : " + requestUrl);
-                
+
         return webClient.get()
-            .uri(requestUrl)
+            .uri(URI.create(requestUrl))
             .retrieve()
             .bodyToMono(String.class)
-            .doOnNext(body -> {
-                if (body.startsWith("<")) {
-                    System.out.println("API 응답이 HTML입니다. 키 또는 파라미터 오류 가능성!");
-                } else {
-                    System.out.println("JSON 응답 성공: " + body);
-                }
-                })
-                .doOnError(error -> System.out.println("에러 발생: " + error.getMessage()));
-    }   
+            .map(this::parseFestivalDTOs).block();
+}
 
+private void validateToken(String token) {
+    try {
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        Claims claims = Jwts.parserBuilder()
+                            .setSigningKey(key)
+                            .build()
+                            .parseClaimsJws(token)
+                            .getBody();
+    } catch (Exception e) {
+        throw new RuntimeException("유효하지 않은 토큰입니다.");
+    }
+}
+
+
+
+private List<FestivalDTO> parseFestivalDTOs(String responseBody) {
+    List<FestivalDTO> festivalDTOList = new ArrayList<>();
+
+    try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(responseBody);
+        JsonNode rootNode = objectMapper.readTree(responseBody);
+        JsonNode festivalItem = rootNode.path("response").path("body").path("items").path("item");
+
+        if (festivalItem.isArray()) {
+            for (JsonNode festivalNode : festivalItem) {
+                String title = festivalNode.path("title").asText();
+                String startDate = festivalNode.path("eventstartdate").asText();
+                String endDate = festivalNode.path("eventenddate").asText();
+                String image = festivalNode.path("firstimage").asText();
+                String address = festivalNode.path("addr1").asText();
+
+                FestivalDTO festivalDTO = new FestivalDTO(title, startDate, endDate, image, address);
+                festivalDTOList.add(festivalDTO);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return festivalDTOList;
+}
 }
