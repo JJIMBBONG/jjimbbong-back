@@ -1,5 +1,7 @@
 package com.ateam.jjimppong_back.service.implement;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,8 +17,10 @@ import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsUserInfoRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.IsExistingUserResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.MyPageEntity;
@@ -381,4 +385,24 @@ public class AuthServiceImplement implements AuthService{
 
     }
 
+    @Override
+    public ResponseEntity<IsExistingUserResponseDto> isExistingUser(SnsUserInfoRequestDto dto) {
+        try {
+            // snsId와 joinType을 기준으로 사용자 존재 여부 확인
+            Optional<UserEntity> userOpt = userRepository.findBySnsIdAndJoinType(dto.getSnsId(), dto.getJoinType());
+
+            if (userOpt.isPresent()) {
+                // 사용자가 존재하면 true 반환
+                return IsExistingUserResponseDto.success(true);
+            } else {
+                // 사용자가 존재하지 않으면 false 반환
+                return IsExistingUserResponseDto.userNotFound(false);
+            }
+
+        } catch (Exception exception) {
+            // 예외 발생 시, 데이터베이스 오류 처리
+            exception.printStackTrace();
+            return IsExistingUserResponseDto.databaseError(false);
+        }
+    }
 }

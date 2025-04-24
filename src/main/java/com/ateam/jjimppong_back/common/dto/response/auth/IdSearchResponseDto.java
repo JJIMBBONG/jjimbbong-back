@@ -16,7 +16,7 @@ public class IdSearchResponseDto extends ResponseDto{
         this.userId = userId;
     }
 
-        // 성공 응답 메서드 추가 (성공 메시지와 상태 코드 200)
+    // 성공 응답 메서드 추가 (성공 메시지와 상태 코드 200)
     public static ResponseEntity<IdSearchResponseDto> success(String userId) {
         IdSearchResponseDto body = new IdSearchResponseDto(userId);
         return ResponseEntity.status(HttpStatus.OK).body(body);
