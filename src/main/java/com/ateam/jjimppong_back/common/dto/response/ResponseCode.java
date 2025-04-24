@@ -12,6 +12,7 @@ public interface ResponseCode {
     String DUPLICATED_EMAIL = "DE";
     String NO_EXIST_BOARD = "NB";
     String PASSWORD_NOT_MATCHED = "PN";
+    String USER_NOT_FOUND = "UF";
     
     String NO_PERMISSION = "NP";
 
