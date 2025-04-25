@@ -85,6 +85,10 @@ public class BoardServiceImplement implements BoardService {
 
     try {
 
+      BoardEntity boardEntity = boardRepository.findByUserId(userId);
+      String writerId = boardEntity.getUserId();
+      UserEntity userEntity = userRepository.findByUserId(writerId);
+      Integer userLevel = userEntity.getUserLevel();
       List<BoardProjection> projections = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
 
       for (BoardProjection B : projections) {
@@ -101,7 +105,7 @@ public class BoardServiceImplement implements BoardService {
           B.getBoardImage(),
           B.getUserId(),
           B.getUserNickname(),
-          B.getUserLevel()
+          B.setUserLevel(userLevel)
         );
         voList.add(vo);
       }
@@ -173,7 +177,7 @@ public class BoardServiceImplement implements BoardService {
 
         try {
 
-          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByWriteDate();
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByWriteDateDesc();
           for (FilteredBoardProjection p : projections){
             FilteredBoardVO vo = new FilteredBoardVO(
               p.getBoardNumber(),
@@ -207,7 +211,7 @@ public class BoardServiceImplement implements BoardService {
 
         try {
 
-          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByViewCount();
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByViewCountDesc();
           for (FilteredBoardProjection p : projections){
             FilteredBoardVO vo = new FilteredBoardVO(
               p.getBoardNumber(),
@@ -240,7 +244,7 @@ public class BoardServiceImplement implements BoardService {
 
         try {
 
-          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByGoodCount();
+          List<FilteredBoardProjection> projections = boardRepository.findAllWithOrderByGoodCountDesc();
           for (FilteredBoardProjection p : projections){
             FilteredBoardVO vo = new FilteredBoardVO(
               p.getBoardNumber(),

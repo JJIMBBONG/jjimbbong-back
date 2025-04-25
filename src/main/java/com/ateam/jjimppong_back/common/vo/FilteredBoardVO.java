@@ -20,10 +20,10 @@ public class FilteredBoardVO {
     private String userNickname;
     private Integer goodCount;
     private Integer commentCount;
-    private String userLevel;
+    private Integer userLevel;
 
     public FilteredBoardVO(Integer boardNumber, String boardWriteDate, String boardAddressCategory, String boardDetailCategory,
-    String boardTitle, Integer boardViewCount, Integer boardScore, String boardImage, String userNickname, String userLevel,
+    String boardTitle, Integer boardViewCount, Integer boardScore, String boardImage, String userNickname, Integer userLevel,
     Integer goodCount, Integer commentCount 
     ){
         this.boardNumber = boardNumber;

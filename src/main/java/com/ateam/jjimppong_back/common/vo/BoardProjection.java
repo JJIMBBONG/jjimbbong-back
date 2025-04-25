@@ -13,5 +13,5 @@ public interface BoardProjection {
   String getBoardImage();
   String getUserId();
   String getUserNickname();
-  Integer getUserLevel();
+  Integer setUserLevel(Integer userLevel);
 }

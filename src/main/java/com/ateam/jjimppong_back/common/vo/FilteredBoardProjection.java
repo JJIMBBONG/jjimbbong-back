@@ -10,7 +10,7 @@ public interface FilteredBoardProjection {
     Integer getBoardScore();
     String getBoardImage();
     String getUserNickname();
-    String getUserLevel();
+    Integer getUserLevel();
     Integer getGoodCount();
     Integer getCommentCount();
 }
