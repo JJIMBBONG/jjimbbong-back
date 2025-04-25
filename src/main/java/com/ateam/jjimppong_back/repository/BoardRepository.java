@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
@@ -17,6 +16,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
   
   boolean existsByBoardNumber(Integer boardNumber);
   BoardEntity findByBoardNumber(Integer boardNumber);
+
+  BoardEntity findByUserId(String userId);
 
   List<BoardEntity> findByUserIdOrderByBoardWriteDateDescBoardNumberDesc(String UserId);
   List<BoardEntity> findByOrderByBoardScoreDesc();
@@ -82,16 +83,16 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       b.user_level AS userLevel, " +
+    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
     "  COUNT(DISTINCT g.board_number) AS goodCount, " +
     "  COUNT(DISTINCT c.board_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
     "LEFT JOIN comment c ON b.board_number = c.board_number " +
     "GROUP BY b.board_number " +
-    "ORDER BY b.board_write_date DESC",
+    "ORDER BY b.board_write_date DESC, b.board_number DESC",
     nativeQuery = true)
-    List<FilteredBoardProjection> findAllWithOrderByWriteDate();
+    List<FilteredBoardProjection> findAllWithOrderByWriteDateDesc();
 
     
     // 조회수 순 //
@@ -105,7 +106,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       b.user_level AS userLevel, " +
+    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
     "  COUNT(DISTINCT g.board_number) AS goodCount, " +
     "  COUNT(DISTINCT c.board_number) AS commentCount " +
     "FROM board b " +
@@ -114,7 +115,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "GROUP BY b.board_number " +
     "ORDER BY b.board_view_count DESC",
     nativeQuery = true)
-    List<FilteredBoardProjection> findAllWithOrderByViewCount();
+    List<FilteredBoardProjection> findAllWithOrderByViewCountDesc();
 
 
     // 좋아요 순 //
@@ -129,16 +130,16 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       b.user_level AS userLevel, " +
+    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
     "  COUNT(DISTINCT g.user_id) AS goodCount, " +
     "  COUNT(DISTINCT c.comment_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
     "LEFT JOIN comment c ON b.board_number = c.board_number " +
     "GROUP BY b.board_number " +
-    "ORDER BY COUNT(DISTINCT g.board_number) DESC",
+    "ORDER BY COUNT(DISTINCT g.board_number) DESC, b.board_number DESC",
     nativeQuery = true)
-    List<FilteredBoardProjection> findAllWithOrderByGoodCount();
+    List<FilteredBoardProjection> findAllWithOrderByGoodCountDesc();
 
 
 

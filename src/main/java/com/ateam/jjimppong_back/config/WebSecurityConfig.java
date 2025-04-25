@@ -61,7 +61,7 @@ public class WebSecurityConfig {
         .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
         .requestMatchers("/api/v1/festivals/**", "/festivals/**", "/popup-stores/**", "/restaurants/**").permitAll()
         .requestMatchers("/api/v1/auth/password-reset").permitAll()
-        .requestMatchers("/api/v1/board", "/api/v1/board/**").authenticated()
+        .requestMatchers("/api/v1/board", "/api/v1/board/**").permitAll()
         .anyRequest().authenticated()
     )
     // description: Oauth 로그인 적용 //
