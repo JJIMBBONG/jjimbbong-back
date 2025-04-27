@@ -44,13 +44,13 @@ public class BoardController {
     return response;
   }
 
-  @GetMapping("/my")
-  public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(
-    @AuthenticationPrincipal String userId
-  ) {
-    ResponseEntity<? super GetMyBoardResponseDto> response = boardService.getMyBoard(userId);
-    return response;
-  }
+  // @GetMapping("/my")
+  // public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(
+  //   @AuthenticationPrincipal String userId
+  // ) {
+  //   ResponseEntity<? super GetMyBoardResponseDto> response = boardService.getMyBoard(userId);
+  //   return response;
+  // }
 
   @GetMapping("/{boardNumber}")
   public ResponseEntity<? super GetBoardResponseDto> getBoard(

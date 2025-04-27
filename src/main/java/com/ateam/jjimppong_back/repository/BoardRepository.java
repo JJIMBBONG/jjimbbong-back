@@ -45,10 +45,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       u.user_nickname AS userNickname, " +
     "       u.user_level AS userLevel " +
     "FROM board b " +
-    "LEFT JOIN user u ON b.user_id = u.user_id " +
-    "ORDER BY b.board_number DESC",
+    "LEFT JOIN user u ON b.user_nickname = u.user_nickname ",
     nativeQuery = true)
-    List<BoardProjection> findByUserIdOrderByBoardNumberDesc(String userId);
+    List<BoardProjection> findAllBoardNumber(Integer boardNumber);
 
   @Query(value =
         "SELECT b.board_number As boardNumber, " +
@@ -83,10 +82,11 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
+    "       u.user_level AS userLevel, " +
     "  COUNT(DISTINCT g.board_number) AS goodCount, " +
     "  COUNT(DISTINCT c.board_number) AS commentCount " +
     "FROM board b " +
+    "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
     "LEFT JOIN comment c ON b.board_number = c.board_number " +
     "GROUP BY b.board_number " +
@@ -106,10 +106,11 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
+    "       u.user_level AS userLevel, " +
     "  COUNT(DISTINCT g.board_number) AS goodCount, " +
     "  COUNT(DISTINCT c.board_number) AS commentCount " +
     "FROM board b " +
+    "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
     "LEFT JOIN comment c ON b.board_number = c.board_number " +
     "GROUP BY b.board_number " +
@@ -130,10 +131,11 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_score AS boardScore, " +
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
-    "       (SELECT MAX(u.user_level) FROM user u LEFT JOIN board b ON u.user_id = b.user_id) AS userLevel, " +
+    "       u.user_level AS userLevel, " +
     "  COUNT(DISTINCT g.user_id) AS goodCount, " +
     "  COUNT(DISTINCT c.comment_number) AS commentCount " +
     "FROM board b " +
+    "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
     "LEFT JOIN comment c ON b.board_number = c.board_number " +
     "GROUP BY b.board_number " +
