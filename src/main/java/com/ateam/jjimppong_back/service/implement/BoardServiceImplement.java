@@ -78,46 +78,42 @@ public class BoardServiceImplement implements BoardService {
     
   }
 
-  @Override
-  public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId) {
+  // @Override
+  // public ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId) {
     
-    List<BoardVO> voList = new ArrayList<>();
+  //   List<BoardVO> voList = new ArrayList<>();
 
-    try {
+  //   try {
 
-      BoardEntity boardEntity = boardRepository.findByUserId(userId);
-      String writerId = boardEntity.getUserId();
-      UserEntity userEntity = userRepository.findByUserId(writerId);
-      Integer userLevel = userEntity.getUserLevel();
-      List<BoardProjection> projections = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
+  //     List<BoardProjection> projections = boardRepository.findByUserIdOrderByBoardNumberDesc(userId);
 
-      for (BoardProjection B : projections) {
-        BoardVO vo = new BoardVO(
-          B.getBoardNumber(),
-          B.getBoardContent(),
-          B.getBoardTitle(),
-          B.getBoardAddressCategory(),
-          B.getBoardDetailCategory(),
-          B.getBoardWriteDate(),
-          B.getBoardViewCount(),
-          B.getBoardScore(),
-          B.getBoardAddress(),
-          B.getBoardImage(),
-          B.getUserId(),
-          B.getUserNickname(),
-          B.setUserLevel(userLevel)
-        );
-        voList.add(vo);
-      }
+  //     for (BoardProjection B : projections) {
+  //       BoardVO vo = new BoardVO(
+  //         B.getBoardNumber(),
+  //         B.getBoardContent(),
+  //         B.getBoardTitle(),
+  //         B.getBoardAddressCategory(),
+  //         B.getBoardDetailCategory(),
+  //         B.getBoardWriteDate(),
+  //         B.getBoardViewCount(),
+  //         B.getBoardScore(),
+  //         B.getBoardAddress(),
+  //         B.getBoardImage(),
+  //         B.getUserId(),
+  //         B.getUserNickname(),
+  //         B.getUserLevel()
+  //       );
+  //       voList.add(vo);
+  //     }
       
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.databaseError();
-    }
+  //   } catch (Exception exception) {
+  //     exception.printStackTrace();
+  //     return ResponseDto.databaseError();
+  //   }
 
-    return GetMyBoardResponseDto.success(voList);
+  //   return GetMyBoardResponseDto.success(voList);
     
-  }
+  // }
 
   @Override
   public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -128,6 +124,17 @@ public class BoardServiceImplement implements BoardService {
 
       boardEntity = boardRepository.findByBoardNumber(boardNumber);
       if (boardEntity == null) return ResponseDto.noExistBoard();
+
+      // 게시글 상세 보기를 요청했을때 유저 정보에 저장된 userLevel값이 보이도록 작업
+      String writerId = boardEntity.getUserId();
+      UserEntity userEntity = userRepository.findByUserId(writerId);
+      Integer userLevel = userEntity.getUserLevel();
+      Integer boardUserLevel = boardEntity.getUserLevel();
+      boolean isMatch = (boardUserLevel == userLevel);
+      if (!isMatch) {
+        boardUserLevel = userLevel;
+        boardEntity.setUserLevel(boardUserLevel);
+      }
       
     } catch (Exception exception) {
       exception.printStackTrace();

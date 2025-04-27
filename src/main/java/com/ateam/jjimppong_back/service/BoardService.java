@@ -16,7 +16,9 @@ import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardRespo
 
 public interface BoardService {
   ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId);
-  ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId);
+  
+  // ResponseEntity<? super GetMyBoardResponseDto> getMyBoard(String userId);
+
   ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
   ResponseEntity<? super GetRecommandBoardResponseDto> getRecommandBoard();
   ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String userId);
