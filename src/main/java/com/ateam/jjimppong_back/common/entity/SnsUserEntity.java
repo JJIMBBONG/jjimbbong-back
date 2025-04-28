@@ -1,8 +1,5 @@
 package com.ateam.jjimppong_back.common.entity;
 
-
-import java.sql.Timestamp;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,36 +12,26 @@ import lombok.*;
 public class SnsUserEntity {
 
     @Id
-    @Column(name = "sns_id", nullable = false, length = 100)
-    private String snsId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private Long autoId;
 
-    @Column(name = "join_type", nullable = false, length = 6)
+    private String snsId;
     private String joinType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    private UserEntity userEntity;
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)  // 외래 키 설정
+    private UserEntity userEntity;  // UserEntity와의 관계
 
-    @Column(name = "created_at", updatable = false)
-    private Timestamp createdAt;
+    // 생성자에서 필드 설정
+    public SnsUserEntity(String snsId, String joinType, UserEntity userEntity) {
+        this.snsId = snsId;
+        this.joinType = joinType;
+        this.userEntity = userEntity;  // userEntity로 설정
+    }
 
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
-
+    // 새로운 생성자 추가
     public SnsUserEntity(String snsId, String joinType) {
         this.snsId = snsId;
         this.joinType = joinType;
     }
-
-    @PrePersist
-    public void onCreate() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
-    }  
 }

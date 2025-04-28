@@ -1,7 +1,9 @@
 package com.ateam.jjimppong_back.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ateam.jjimppong_back.common.dto.request.auth.EmailAuthCheckRequestDto;
@@ -13,11 +15,9 @@ import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
-import com.ateam.jjimppong_back.common.dto.request.auth.SnsUserInfoRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SnsUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
-import com.ateam.jjimppong_back.common.dto.response.auth.IsExistingUserResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
@@ -87,8 +87,11 @@ public class AuthController {
 
     // SNS 로그인 후 추가 정보 입력을 통한 회원가입 처리
     @PostMapping("/sns-sign-up")
-    public ResponseEntity<ResponseDto> snsSignUp(@RequestBody @Valid SnsSignUpRequestDto requestBody) {
-        return authService.snsSignUp(requestBody, requestBody.getSnsId(), requestBody.getJoinType());
+    public ResponseEntity<ResponseDto> snsSignUp(
+        @RequestBody @Valid SnsSignUpRequestDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = authService.snsSignUp(requestBody);
+        return response;
     }
 
     @PostMapping("/sign-in")
@@ -119,15 +122,6 @@ public class AuthController {
     @PostMapping("/sns-save")
     ResponseEntity<ResponseDto> saveSnsUser(@RequestBody SnsUserRequestDto requestBody) {
         ResponseEntity<ResponseDto> response = snsUserService.saveSnsUser(requestBody.getSnsId(), requestBody.getJoinType(), requestBody.getUserId());
-        return response;
-    }
-
-    @PostMapping("/check-user")
-    public ResponseEntity<IsExistingUserResponseDto> checkUser(
-        @RequestBody SnsUserInfoRequestDto dto
-        ) {
-        // AuthService의 isExistingUser 메서드를 호출하여 사용자 존재 여부 확인
-        ResponseEntity<IsExistingUserResponseDto> response = authService.isExistingUser(dto);
         return response;
     }
 
