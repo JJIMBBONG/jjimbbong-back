@@ -331,7 +331,7 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber) {
+  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber, String userId) {
     
     List<CommentEntity> commentEntities = new ArrayList<>();
 

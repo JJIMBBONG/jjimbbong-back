@@ -25,17 +25,16 @@ public class CommentEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer commentNumber;
-  private String userId;
   private Integer boardNumber;
   private String commentContent;
-  private Integer userLevel;
+  private String userId;
   private String writeDate;
 
   public CommentEntity(PostCommentRequestDto dto, Integer boardNumber, String userId) {
     LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
-    this.userId = userId;
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     this.boardNumber = boardNumber;
+    this.userId = userId;
     this.writeDate = now.format(dateTimeFormatter);
     this.commentContent = dto.getCommentContent();
   }
