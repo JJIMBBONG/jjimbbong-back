@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
@@ -28,7 +29,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "FROM board " +
     "WHERE user_id = :userId ",
     nativeQuery = true)
-    Integer sumBoardScoreByUserId(String userId);
+    Integer sumBoardScoreByUserId(@Param("userId")String userId);
 
   @Query(value = 
     "SELECT b.board_number AS boardNumber, " +
