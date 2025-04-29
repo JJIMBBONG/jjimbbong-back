@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -61,7 +62,7 @@ public class WebSecurityConfig {
         .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
         .requestMatchers("/api/v1/festivals/**", "/festivals/**", "/popup-stores/**", "/restaurants/**").permitAll()
         .requestMatchers("/api/v1/auth/password-reset").permitAll()
-        .requestMatchers("/api/v1/board", "/api/v1/board/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/v1/board", "/api/v1/board/**").permitAll() // GET 요청으로 제대로 나눠주지 않으면 POST때 엉뚱한 토큰을 받아도 그냥 허용하게된다. 주의.
         .anyRequest().authenticated()
     )
     // description: Oauth 로그인 적용 //

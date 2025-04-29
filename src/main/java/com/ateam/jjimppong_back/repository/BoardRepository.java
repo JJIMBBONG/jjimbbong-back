@@ -31,6 +31,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     nativeQuery = true)
     Integer sumBoardScoreByUserId(@Param("userId") String userId);
 
+
   @Query(value = 
     "SELECT b.board_number AS boardNumber, " +
     "       b.board_content AS boardContent, " +
@@ -134,7 +135,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.user_nickname AS userNickname, " +
     "       u.user_level AS userLevel, " +
     "  COUNT(DISTINCT g.user_id) AS goodCount, " +
-    "  COUNT(DISTINCT c.comment_number) AS commentCount " +
+    "  COUNT(c.comment_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
