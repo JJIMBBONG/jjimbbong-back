@@ -29,7 +29,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "FROM board " +
     "WHERE user_id = :userId ",
     nativeQuery = true)
-    Integer sumBoardScoreByUserId(@Param("userId")String userId);
+    Integer sumBoardScoreByUserId(@Param("userId") String userId);
+
 
   @Query(value = 
     "SELECT b.board_number AS boardNumber, " +
