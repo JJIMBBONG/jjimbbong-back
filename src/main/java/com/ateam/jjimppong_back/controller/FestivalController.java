@@ -55,8 +55,6 @@ public class FestivalController {
                 "&sigunguCode=" + sigunguCode +
                 "&_type=json";
 
-        System.out.println("호출 API : " + requestUrl);
-
         return webClient.get()
             .uri(URI.create(requestUrl))
             .retrieve()
@@ -85,7 +83,6 @@ private List<FestivalDTO> parseFestivalDTOs(String responseBody) {
 
     try {
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(responseBody);
         JsonNode rootNode = objectMapper.readTree(responseBody);
         JsonNode festivalItem = rootNode.path("response").path("body").path("items").path("item");
 
