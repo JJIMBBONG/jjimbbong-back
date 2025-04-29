@@ -14,17 +14,20 @@ import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.MyPageEntity;
+import com.ateam.jjimppong_back.common.entity.SnsUserEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.util.EmailAuthNumberUtil;
 import com.ateam.jjimppong_back.common.util.TemporaryPasswordUtil;
 import com.ateam.jjimppong_back.repository.EmailAuthNumberRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.AuthService;
+import com.ateam.jjimppong_back.repository.SnsUserRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
@@ -51,6 +54,8 @@ public class AuthServiceImplement implements AuthService{
     private final JwtProvider jwtProvider;
     // 비밀번호 암호화
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private final SnsUserRepository snsUserRepository;
 
     @Override
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
@@ -95,6 +100,35 @@ public class AuthServiceImplement implements AuthService{
             boolean existEmail = userRepository.existsByUserEmail(userEmail);
             // 이메일 중복 에러 코드 전송
             if(existEmail) return ResponseDto.duplicatiedEmail();
+
+            // 생성한 인증번호 를 authNumber에 저장
+            String authNumber = EmailAuthNumberUtil.createCodeNumber();
+
+            EmailAuthEntity emailAuthEntity = new EmailAuthEntity(userEmail, authNumber);
+            // 저장소에 이메일과, 인증번호 저장
+            emailAuthNumberRepository.save(emailAuthEntity);
+
+            // 메일 전송 기능 사용
+            mailProvider.mailAuthSend(userEmail, authNumber);
+
+        } catch(MessagingException exception){ 
+            exception.printStackTrace();
+            return ResponseDto.mailSendFail();
+        } catch(Exception exception){ 
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success(HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> emailAuthId(EmailAuthRequestDto dto) {
+
+        try{
+
+            String userEmail = dto.getUserEmail();
 
             // 생성한 인증번호 를 authNumber에 저장
             String authNumber = EmailAuthNumberUtil.createCodeNumber();
@@ -233,17 +267,18 @@ public class AuthServiceImplement implements AuthService{
             // 암호화한 비밀번호
             String encodedPassword = passwordEncoder.encode(userPassword);
             dto.setUserPassword(encodedPassword);
+            
             UserEntity userEntity = new UserEntity(dto);
 
-            // 회원가입 시 myPageEntity가 기본값으로 생성
-            MyPageEntity myPageEntity = new MyPageEntity();
-            myPageEntity.setUserId(userId);
-            myPageEntity.setUserNickname(userNickname);
-            myPageEntity.setUserLevel(0);
-            myPageEntity.setUserScore(0);
-            // 양방향 관계 설정
-            userEntity.setMyPageEntity(myPageEntity);
-            myPageEntity.setUserEntity(userEntity);
+            // // 회원가입 시 myPageEntity가 기본값으로 생성
+            // MyPageEntity myPageEntity = new MyPageEntity();
+            // myPageEntity.setUserId(userId);
+            // myPageEntity.setUserNickname(userNickname);
+            // myPageEntity.setUserLevel(1);
+            // myPageEntity.setUserScore(0);
+            // // 양방향 관계 설정
+            // userEntity.setMyPageEntity(myPageEntity);
+            // myPageEntity.setUserEntity(userEntity);
 
             userRepository.save(userEntity);
 
@@ -254,6 +289,69 @@ public class AuthServiceImplement implements AuthService{
 
         return ResponseDto.success(HttpStatus.CREATED);
 
+    }
+
+    // 프론트에서 전달받은 추가 정보를 저장하는 로직 (회원가입과 동일)
+    @Override
+    @Transactional
+    public ResponseEntity<ResponseDto> snsSignUp(SnsSignUpRequestDto dto, String snsId, String joinType) {
+        try {
+        // 이메일 인증 확인
+        EmailAuthCheckRequestDto emailAuthCheckRequestDto = new EmailAuthCheckRequestDto();
+        emailAuthCheckRequestDto.setUserEmail(dto.getUserEmail());
+        emailAuthCheckRequestDto.setAuthNumber(dto.getAuthNumber());  // 인증번호는 사용자가 제공한 인증번호
+
+        // 이메일 인증 확인 메서드 호출
+        ResponseEntity<ResponseDto> emailAuthResponse = emailAuthCheck(emailAuthCheckRequestDto);
+
+        // 이메일 인증 실패 시 처리
+        if (emailAuthResponse.getStatusCode() != HttpStatus.OK) {
+            return emailAuthResponse;  // 이메일 인증 실패 응답을 그대로 반환
+        }
+
+        // 사용자 ID 중복 확인
+        String userId = dto.getUserId();
+        boolean existUser = userRepository.existsByUserId(userId);
+        if (existUser) return ResponseDto.existUser();
+
+        // 사용자 닉네임 중복 확인
+        String userNickname = dto.getUserNickname();
+        boolean existNickname = userRepository.existsByUserNickname(userNickname);
+        if (existNickname) return ResponseDto.existUser();
+
+        // 사용자 이메일 중복 확인
+        String userEmail = dto.getUserEmail();
+        boolean existEmail = userRepository.existsByUserEmail(userEmail);
+        if (existEmail) return ResponseDto.existUser();
+
+        // 비밀번호 암호화
+        String userPassword = dto.getUserPassword();
+        String encodedPassword = passwordEncoder.encode(userPassword);
+        dto.setUserPassword(encodedPassword);
+
+        // 새로운 UserEntity 생성
+        UserEntity userEntity = new UserEntity(dto);
+
+        // SNS 로그인 정보 추가 (snsId, joinType)
+        userEntity.setSnsId(snsId);  // SNS 로그인 ID
+        userEntity.setJoinType(joinType);  // SNS 종류 (KAKAO, NAVER 등)
+
+        // UserEntity 저장
+        userRepository.save(userEntity);
+
+        // SNS User 정보 저장
+        SnsUserEntity snsUserEntity = new SnsUserEntity();
+        snsUserEntity.setSnsId(snsId);
+        snsUserEntity.setJoinType(joinType);  // SNS 종류
+        snsUserEntity.setUserEntity(userEntity);  // UserEntity와 연결
+        snsUserRepository.save(snsUserEntity);
+
+        } catch (Exception exception) {
+          exception.printStackTrace();
+          return ResponseDto.databaseError();  // DB 오류 응답
+        }
+
+        return ResponseDto.success(HttpStatus.CREATED);  // 성공 응답
     }
 
     @Override

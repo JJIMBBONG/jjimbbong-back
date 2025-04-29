@@ -3,6 +3,7 @@ package com.ateam.jjimppong_back.service;
 import org.springframework.http.ResponseEntity;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PostNicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetDetailMyBoardResponseDto;
@@ -12,8 +13,9 @@ import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponse
 
 public interface MyPageService {
   ResponseEntity<ResponseDto> passwordReCheck(PasswordReCheckRequestDto dto, String userId);
+  ResponseEntity<ResponseDto> updateNicknameCheck(PostNicknameCheckRequestDto dto, String userId);
 
-  ResponseEntity<ResponseDto> patchMyPageInfo(String userId);
+  ResponseEntity<ResponseDto> updateMyPageInfo(String userId);
 
   ResponseEntity<? super GetMyLevelResponseDto> getMyLevel(String userId);
   ResponseEntity<? super GetMyPageBoardResponseDto> getMyPageBoard(String userId);

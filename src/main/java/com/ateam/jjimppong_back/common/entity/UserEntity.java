@@ -1,7 +1,7 @@
 package com.ateam.jjimppong_back.common.entity;
 
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
-
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 
 import jakarta.persistence.CascadeType;
@@ -53,10 +53,26 @@ public class UserEntity {
         this.joinType = dto.getJoinType();
     }
 
+    public UserEntity(SnsSignUpRequestDto dto){ 
+        this.userId = dto.getUserId();
+        this.userNickname = dto.getUserNickname();
+        this.userEmail = dto.getUserEmail();
+        this.name = dto.getName();
+        this.userPassword = dto.getUserPassword();
+        this.address = dto.getAddress();
+        this.detailAddress = dto.getDetailAddress();
+        this.profileImage = dto.getProfileImage();
+        this.gender = dto.getGender();
+        this.userLevel = Integer.parseInt(dto.getUserLevel());
+        this.joinType = dto.getJoinType();
+        this.snsId = dto.getSnsId();
+    }
+
     public void patch(PatchSignInUserRequestDto dto) {
         this.userNickname = dto.getUserNickname();
         this.userPassword = dto.getUserPassword();
         this.address = dto.getAddress();
         this.detailAddress = dto.getDetailAddress();
+        this.profileImage = dto.getProfileImage();
     }
 }
