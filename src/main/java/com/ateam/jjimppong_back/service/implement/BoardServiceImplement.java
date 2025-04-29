@@ -388,6 +388,9 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<ResponseDto> putGood(Integer boardNumber, String userId) {
     try {
+      
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
 
       GoodEntity goodEntity = goodRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (goodEntity == null) {
@@ -424,6 +427,9 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<ResponseDto> putHate(Integer boardNumber, String userId) {
     try {
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
 
       HateEntity hateEntity = hateRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (hateEntity == null) {
