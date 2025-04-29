@@ -92,10 +92,9 @@ public class BoardController {
 
   @GetMapping("/{boardNumber}/comment")
   public ResponseEntity<? super GetCommentResponseDto> getComment(
-    @PathVariable("boardNumber") Integer boardNumber,
-    @AuthenticationPrincipal String userId
+    @PathVariable("boardNumber") Integer boardNumber
   ) {
-    ResponseEntity<? super GetCommentResponseDto> response = boardService.getComment(boardNumber, userId);
+    ResponseEntity<? super GetCommentResponseDto> response = boardService.getComment(boardNumber);
     return response;
   }
 

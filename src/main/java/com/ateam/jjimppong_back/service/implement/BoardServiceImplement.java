@@ -25,6 +25,8 @@ import com.ateam.jjimppong_back.common.entity.HateEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.vo.BoardProjection;
 import com.ateam.jjimppong_back.common.vo.BoardVO;
+import com.ateam.jjimppong_back.common.vo.CommentProjection;
+import com.ateam.jjimppong_back.common.vo.CommentVO;
 import com.ateam.jjimppong_back.common.vo.FilteredBoardProjection;
 import com.ateam.jjimppong_back.common.vo.FilteredBoardVO;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
@@ -37,6 +39,7 @@ import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 import com.ateam.jjimppong_back.service.MyPageService;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -331,20 +334,31 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber, String userId) {
+  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber) {
     
-    List<CommentEntity> commentEntities = new ArrayList<>();
+    List<CommentVO> voList = new ArrayList<>();
 
     try {
 
-      commentEntities = commentRepository.findByBoardNumberOrderByWriteDateDesc(boardNumber);
+        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByCommentWriteDateDesc(boardNumber);
+        for (CommentProjection p : projections){
+          CommentVO vo = new CommentVO(
+            p.getCommentNumber(), 
+            p.getCommentWriteDate(), 
+            p.getCommentContent(), 
+            p.getCommentWriterId(), 
+            p.getUserNickname(), 
+            p.getUserLevel()
+            );
+            voList.add(vo);
+        }
       
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetCommentResponseDto.success(commentEntities);
+    return GetCommentResponseDto.success(voList);
 
   }
 
