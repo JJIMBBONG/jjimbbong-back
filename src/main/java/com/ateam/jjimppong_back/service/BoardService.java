@@ -28,7 +28,7 @@ public interface BoardService {
   ResponseEntity<? super GetHateResponseDto> getHate(Integer boardNumber);
   ResponseEntity<ResponseDto> putHate(Integer boardNumber, String userId);
 
-  ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber, String userId);
+  ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber);
   ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String userId);
 
   ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate();
