@@ -19,6 +19,7 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
+import com.ateam.jjimppong_back.common.entity.MyPageEntity;
 import com.ateam.jjimppong_back.common.entity.SnsUserEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.common.util.EmailAuthNumberUtil;
@@ -269,15 +270,15 @@ public class AuthServiceImplement implements AuthService{
             
             UserEntity userEntity = new UserEntity(dto);
 
-            // // 회원가입 시 myPageEntity가 기본값으로 생성
-            // MyPageEntity myPageEntity = new MyPageEntity();
-            // myPageEntity.setUserId(userId);
-            // myPageEntity.setUserNickname(userNickname);
-            // myPageEntity.setUserLevel(1);
-            // myPageEntity.setUserScore(0);
-            // // 양방향 관계 설정
-            // userEntity.setMyPageEntity(myPageEntity);
-            // myPageEntity.setUserEntity(userEntity);
+            // 회원가입 시 myPageEntity가 기본값으로 생성
+            MyPageEntity myPageEntity = new MyPageEntity();
+            myPageEntity.setUserId(userId);
+            myPageEntity.setUserNickname(userNickname);
+            myPageEntity.setUserLevel(1);
+            myPageEntity.setUserScore(0);
+            // 양방향 관계 설정
+            userEntity.setMyPageEntity(myPageEntity);
+            myPageEntity.setUserEntity(userEntity);
 
             userRepository.save(userEntity);
 
