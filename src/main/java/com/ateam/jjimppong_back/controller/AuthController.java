@@ -16,6 +16,7 @@ import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignUpResponseDto;
 import com.ateam.jjimppong_back.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -80,10 +81,10 @@ public class AuthController {
 
     // SNS 로그인 후 추가 정보 입력을 통한 회원가입 처리
     @PostMapping("/sns-sign-up")
-    public ResponseEntity<ResponseDto> snsSignUp(
+    public ResponseEntity<? super SnsSignUpResponseDto> snsSignUp(
         @RequestBody @Valid SnsSignUpRequestDto requestBody
     ) {
-        ResponseEntity<ResponseDto> response = authService.snsSignUp(requestBody);
+        ResponseEntity<? super SnsSignUpResponseDto> response = authService.snsSignUp(requestBody);
         return response;
     }
 
