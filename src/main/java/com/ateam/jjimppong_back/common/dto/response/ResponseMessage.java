@@ -18,4 +18,6 @@ public interface ResponseMessage {
     String NO_PERMISSION = "No Permission.";
 
     String MAIL_SEND_FAILED = "Mail send Failed";
+
+    String NO_EXIST_COMMENT = "No Exist Comment.";
 }

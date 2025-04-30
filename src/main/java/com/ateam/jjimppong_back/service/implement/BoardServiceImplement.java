@@ -22,6 +22,10 @@ import com.ateam.jjimppong_back.common.entity.CommentEntity;
 import com.ateam.jjimppong_back.common.entity.GoodEntity;
 import com.ateam.jjimppong_back.common.entity.HateEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
+import com.ateam.jjimppong_back.common.vo.BoardProjection;
+import com.ateam.jjimppong_back.common.vo.BoardVO;
+import com.ateam.jjimppong_back.common.vo.CommentProjection;
+import com.ateam.jjimppong_back.common.vo.CommentVO;
 import com.ateam.jjimppong_back.common.vo.FilteredBoardProjection;
 import com.ateam.jjimppong_back.common.vo.FilteredBoardVO;
 import com.ateam.jjimppong_back.common.vo.RecommandBoardProjection;
@@ -330,18 +334,29 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber) {
     
-    List<CommentEntity> commentEntities = new ArrayList<>();
+    List<CommentVO> voList = new ArrayList<>();
 
     try {
 
-      commentEntities = commentRepository.findByBoardNumberOrderByWriteDateDesc(boardNumber);
+        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByCommentWriteDateDesc(boardNumber);
+        for (CommentProjection p : projections){
+          CommentVO vo = new CommentVO(
+            p.getCommentNumber(), 
+            p.getCommentWriteDate(), 
+            p.getCommentContent(), 
+            p.getCommentWriterId(), 
+            p.getUserNickname(), 
+            p.getUserLevel()
+            );
+            voList.add(vo);
+        }
       
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetCommentResponseDto.success(commentEntities);
+    return GetCommentResponseDto.success(voList);
 
   }
 
@@ -385,6 +400,9 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<ResponseDto> putGood(Integer boardNumber, String userId) {
     try {
+      
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
 
       GoodEntity goodEntity = goodRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (goodEntity == null) {
@@ -422,6 +440,9 @@ public class BoardServiceImplement implements BoardService {
   public ResponseEntity<ResponseDto> putHate(Integer boardNumber, String userId) {
     try {
 
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
       HateEntity hateEntity = hateRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (hateEntity == null) {
         hateEntity = new HateEntity(userId, boardNumber);
@@ -435,6 +456,26 @@ public class BoardServiceImplement implements BoardService {
       return ResponseDto.databaseError();
     }
 
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> deleteComment(Integer commentNumber, String userId) {
+    try {
+      
+      CommentEntity commentEntity = commentRepository.findByCommentNumber(commentNumber);
+      if (commentEntity == null) return ResponseDto.noExistComment();
+
+      String commentWriterId = commentEntity.getCommentWriterId();
+      boolean isWriter = commentWriterId.equals(userId);
+      if (!isWriter) return ResponseDto.noPermission();
+
+      commentRepository.delete(commentEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
     return ResponseDto.success(HttpStatus.OK);
   }
 

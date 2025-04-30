@@ -18,4 +18,6 @@ public interface ResponseCode {
     String NO_PERMISSION = "NP";
 
     String MAIL_SEND_FAILED = "MF";
+
+    String NO_EXIST_COMMENT = "NC";
 }

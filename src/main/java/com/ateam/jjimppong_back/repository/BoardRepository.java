@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
@@ -28,7 +29,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "FROM board " +
     "WHERE user_id = :userId ",
     nativeQuery = true)
-    Integer sumBoardScoreByUserId(String userId);
+    Integer sumBoardScoreByUserId(@Param("userId") String userId);
+
 
   @Query(value = 
     "SELECT b.board_number AS boardNumber, " +
@@ -83,8 +85,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
     "       u.user_level AS userLevel, " +
-    "  COUNT(DISTINCT g.board_number) AS goodCount, " +
-    "  COUNT(DISTINCT c.board_number) AS commentCount " +
+    "  COUNT(DISTINCT g.user_id) AS goodCount, " +
+    "  COUNT(c.board_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
@@ -107,8 +109,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.board_image AS boardImage, " +
     "       b.user_nickname AS userNickname, " +
     "       u.user_level AS userLevel, " +
-    "  COUNT(DISTINCT g.board_number) AS goodCount, " +
-    "  COUNT(DISTINCT c.board_number) AS commentCount " +
+    "  COUNT(DISTINCT g.user_id) AS goodCount, " +
+    "  COUNT(c.board_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
@@ -133,7 +135,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
     "       b.user_nickname AS userNickname, " +
     "       u.user_level AS userLevel, " +
     "  COUNT(DISTINCT g.user_id) AS goodCount, " +
-    "  COUNT(DISTINCT c.comment_number) AS commentCount " +
+    "  COUNT(c.comment_number) AS commentCount " +
     "FROM board b " +
     "LEFT JOIN user u ON b.user_id = u.user_id " +
     "LEFT JOIN good g ON b.board_number = g.board_number " +
