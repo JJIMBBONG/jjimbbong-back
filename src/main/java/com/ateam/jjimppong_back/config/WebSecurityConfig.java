@@ -60,7 +60,7 @@ public class WebSecurityConfig {
     .authorizeHttpRequests(request -> request
         .requestMatchers("/api/v1/auth", "/api/v1/auth/**", "/oauth2/**").permitAll()
         .requestMatchers("/file/**", "/api/v1/main", "/api/v1/main/**").permitAll()
-        .requestMatchers("/api/v1/festivals/**", "/festivals/**", "/popup-stores/**", "/restaurants/**").permitAll()
+        .requestMatchers("/api/v1/festivals/**", "/api/festivals/**", "/popup-stores/**", "/restaurants/**").permitAll()
         .requestMatchers("/api/v1/auth/password-reset").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/v1/board", "/api/v1/board/**").permitAll() // GET 요청으로 제대로 나눠주지 않으면 POST때 엉뚱한 토큰을 받아도 그냥 허용하게된다. 주의.
         .anyRequest().authenticated()
