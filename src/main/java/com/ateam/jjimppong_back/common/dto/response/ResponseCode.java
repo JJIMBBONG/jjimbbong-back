@@ -13,6 +13,7 @@ public interface ResponseCode {
     String NO_EXIST_BOARD = "NB";
     String PASSWORD_NOT_MATCHED = "PN";
     String USER_NOT_FOUND = "UF";
+    String SNS_NEED_INFO = "SNI";
     
     String NO_PERMISSION = "NP";
 

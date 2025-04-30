@@ -13,6 +13,7 @@ public interface ResponseMessage {
     String NO_EXIST_BOARD = "No Exist Board.";
     String PASSWORD_NOT_MATCHED = "Password Not Matched";
     String USER_NOT_FOUND = "User Not Found";
+    String SNS_NEED_INFO = "Sns Need Info";
     
     String NO_PERMISSION = "No Permission.";
 
