@@ -340,7 +340,7 @@ public class BoardServiceImplement implements BoardService {
 
     try {
 
-        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByCommentWriteDateDesc(boardNumber);
+        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByWriteDateDesc(boardNumber);
         for (CommentProjection p : projections){
           CommentVO vo = new CommentVO(
             p.getCommentNumber(), 
@@ -370,7 +370,10 @@ public class BoardServiceImplement implements BoardService {
       boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
       if (!existBoard) return ResponseDto.noExistBoard();
 
-      CommentEntity commentEntity = new CommentEntity(dto, boardNumber, userId);
+      UserEntity userEntity = userRepository.findByUserId(userId);
+      Integer userLevel = userEntity.getUserLevel();
+
+      CommentEntity commentEntity = new CommentEntity(dto, boardNumber, userId, userLevel);
       commentRepository.save(commentEntity);
       
     } catch (Exception exception) {
