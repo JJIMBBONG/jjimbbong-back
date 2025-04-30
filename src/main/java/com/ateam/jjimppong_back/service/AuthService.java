@@ -10,10 +10,12 @@ import com.ateam.jjimppong_back.common.dto.request.auth.NicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.PasswordResetRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SignUpRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignInRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.auth.SnsSignUpRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignInResponseDto;
 
 
 public interface AuthService {
@@ -33,5 +35,6 @@ public interface AuthService {
     // super : 본인과 부모타입 사용
     // extends : 본인과 자식타입 사용
     ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
+    ResponseEntity<? super SnsSignInResponseDto> SnsSignIn(SnsSignInRequestDto dto);
 
 }

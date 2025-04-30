@@ -53,8 +53,8 @@ public class UserEntity {
         this.joinType = dto.getJoinType();
     }
 
-    public UserEntity(SnsSignUpRequestDto dto){ 
-        this.userId = dto.getUserId();
+    public UserEntity(SnsSignUpRequestDto dto, String userId){ 
+        this.userId = userId;
         this.userNickname = dto.getUserNickname();
         this.userEmail = dto.getUserEmail();
         this.name = dto.getName();
