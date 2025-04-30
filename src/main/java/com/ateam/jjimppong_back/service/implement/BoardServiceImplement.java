@@ -152,7 +152,7 @@ public class BoardServiceImplement implements BoardService {
     List<RecommandBoardVO> voList = new ArrayList<>();
 
     try {
-        List<RecommandBoardProjection> projections = boardRepository.findAllWithLikeCount();
+        List<RecommandBoardProjection> projections = boardRepository.findAllWithGoodCount();
 
         for (RecommandBoardProjection p : projections) {
             RecommandBoardVO vo = new RecommandBoardVO(
