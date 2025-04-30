@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface SnsUserRepository extends JpaRepository<SnsUserEntity, Long> {
+public interface SnsUserRepository extends JpaRepository<SnsUserEntity, Integer> { // String -> Integer 변경
 
     // SNS의 user_id에 해당하는 모든 sns_user 정보 조회
     Optional<SnsUserEntity> findByUserId(String userId);
