@@ -39,7 +39,6 @@ import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 import com.ateam.jjimppong_back.service.MyPageService;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -461,6 +460,46 @@ public class BoardServiceImplement implements BoardService {
       return ResponseDto.databaseError();
     }
 
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> deleteComment(Integer commentNumber, String userId) {
+    try {
+      
+      CommentEntity commentEntity = commentRepository.findByCommentNumber(commentNumber);
+      if (commentEntity == null) return ResponseDto.noExistComment();
+
+      String commentWriterId = commentEntity.getCommentWriterId();
+      boolean isWriter = commentWriterId.equals(userId);
+      if (!isWriter) return ResponseDto.noPermission();
+
+      commentRepository.delete(commentEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  // 조회수 증가
+  @Override
+  public ResponseEntity<ResponseDto> putViewCount(Integer boardNumber) {
+    try {
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      boardEntity.setBoardViewCount(boardEntity.getBoardViewCount() + 1);
+
+      boardRepository.save(boardEntity);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
     return ResponseDto.success(HttpStatus.OK);
   }
 

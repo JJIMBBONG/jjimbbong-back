@@ -98,6 +98,15 @@ public class BoardController {
     return response;
   }
 
+  @DeleteMapping("/{boardNumber}/comment/{commentNumber}")
+  public ResponseEntity<ResponseDto> deleteComment(
+    @PathVariable("commentNumber") Integer commentNumber,
+    @AuthenticationPrincipal String userId
+  ){
+    ResponseEntity<ResponseDto> response = boardService.deleteComment(commentNumber, userId);
+    return response;
+  }
+
   @GetMapping("/{boardNumber}/good")
   public ResponseEntity<? super GetGoodResponseDto> getGood(
     @PathVariable("boardNumber") Integer boardNumber
@@ -129,6 +138,14 @@ public class BoardController {
     @AuthenticationPrincipal String userId
   ) {
     ResponseEntity<ResponseDto> response = boardService.putHate(boardNumber, userId);
+    return response;
+  }
+
+  @PutMapping("/view-count/{boardNumber}")
+  public ResponseEntity<ResponseDto> putViewCount(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.putViewCount(boardNumber);
     return response;
   }
 
