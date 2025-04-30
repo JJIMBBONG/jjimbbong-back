@@ -22,8 +22,6 @@ import com.ateam.jjimppong_back.common.entity.CommentEntity;
 import com.ateam.jjimppong_back.common.entity.GoodEntity;
 import com.ateam.jjimppong_back.common.entity.HateEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
-import com.ateam.jjimppong_back.common.vo.BoardProjection;
-import com.ateam.jjimppong_back.common.vo.BoardVO;
 import com.ateam.jjimppong_back.common.vo.CommentProjection;
 import com.ateam.jjimppong_back.common.vo.CommentVO;
 import com.ateam.jjimppong_back.common.vo.FilteredBoardProjection;
@@ -60,16 +58,22 @@ public class BoardServiceImplement implements BoardService {
       String userNickname = userEntity.getUserNickname();
       Integer userLevel = userEntity.getUserLevel();
 
-      BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
-      boardRepository.save(boardEntity);
-      
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.databaseError();
-    }
+          BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
 
-    return ResponseDto.success(HttpStatus.CREATED);
-    
+          // ✅ textFileUrl이 DTO에 포함되어 있다면 Entity에도 반영
+          boardEntity.setTextFileUrl(dto.getTextFileUrl());
+
+          boardRepository.save(boardEntity);
+
+          // ✅ 마이페이지 점수 업데이트 로직
+          myPageService.updateMyPageInfo(userId);
+
+      } catch (Exception exception) {
+          exception.printStackTrace();
+          return ResponseDto.databaseError();
+      }
+
+      return ResponseDto.success(HttpStatus.CREATED);
   }
 
   // @Override
@@ -145,7 +149,7 @@ public class BoardServiceImplement implements BoardService {
     List<RecommandBoardVO> voList = new ArrayList<>();
 
     try {
-        List<RecommandBoardProjection> projections = boardRepository.findAllWithLikeCount();
+        List<RecommandBoardProjection> projections = boardRepository.findAllWithGoodCount();
 
         for (RecommandBoardProjection p : projections) {
             RecommandBoardVO vo = new RecommandBoardVO(

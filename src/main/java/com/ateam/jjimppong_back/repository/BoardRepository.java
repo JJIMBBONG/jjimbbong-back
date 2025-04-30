@@ -76,13 +76,13 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
         "       b.board_image AS boardImage, " +
         "       b.user_nickname AS userNickname, " +
         "       b.user_level AS userLevel, " +
-        "       COUNT(g.board_number) AS likeCount " +
+        "       COUNT(DISTINCT g.user_id) AS goodCount " +
         "FROM board b " +
         "LEFT JOIN good g ON b.board_number = g.board_number " +
         "GROUP BY b.board_number " +
         "ORDER BY b.board_score DESC",
         nativeQuery = true)
-  List<RecommandBoardProjection> findAllWithLikeCount();
+  List<RecommandBoardProjection> findAllWithGoodCount();
 
 
   // 최신순으로 게시글 나열 //
