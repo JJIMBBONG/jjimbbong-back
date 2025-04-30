@@ -10,10 +10,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.ateam.jjimppong_back.common.entity.CustomOAuth2User;
-import com.ateam.jjimppong_back.common.entity.SnsUserEntity;
 import com.ateam.jjimppong_back.common.entity.UserEntity;
 import com.ateam.jjimppong_back.provider.JwtProvider;
-import com.ateam.jjimppong_back.repository.SnsUserRepository;
 import com.ateam.jjimppong_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
     
     private final UserRepository userRepository;
-    private final SnsUserRepository snsUserRepository;
     // 토큰
     private final JwtProvider jwtProvider;
 
@@ -46,19 +43,6 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
             attributes.put("joinType", registration);
             // 3번째는 회원가입 여부 / false = 회원가입 안함
             customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
-
-            // user 테이블에 사용자 저장 (첫 로그인 시)
-            userEntity = new UserEntity();
-            // userEntity.setUserId(UUID.randomUUID().toString()); // 사용자 ID를 UUID로 생성 (예시)
-            String userId = registration + snsId;
-            userEntity.setUserId(userId);
-            userEntity.setSnsId(snsId);
-            userEntity.setJoinType(registration);
-            userRepository.save(userEntity);
-
-            // sns_user 테이블에 사용자 정보 저장
-            SnsUserEntity snsUserEntity = new SnsUserEntity(snsId, registration, userEntity);
-            snsUserRepository.save(snsUserEntity);
             
         } else { 
             // 회원가입이 되어있을때

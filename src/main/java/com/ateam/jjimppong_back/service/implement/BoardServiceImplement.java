@@ -16,7 +16,6 @@ import com.ateam.jjimppong_back.common.dto.response.board.GetCommentResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetFilteredBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetGoodResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetHateResponseDto;
-import com.ateam.jjimppong_back.common.dto.response.board.GetMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.board.GetRecommandBoardResponseDto;
 import com.ateam.jjimppong_back.common.entity.BoardEntity;
 import com.ateam.jjimppong_back.common.entity.CommentEntity;
@@ -39,7 +38,6 @@ import com.ateam.jjimppong_back.repository.UserRepository;
 import com.ateam.jjimppong_back.service.BoardService;
 import com.ateam.jjimppong_back.service.MyPageService;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -402,6 +400,9 @@ public class BoardServiceImplement implements BoardService {
   @Override
   public ResponseEntity<ResponseDto> putGood(Integer boardNumber, String userId) {
     try {
+      
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
 
       GoodEntity goodEntity = goodRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (goodEntity == null) {
@@ -439,6 +440,9 @@ public class BoardServiceImplement implements BoardService {
   public ResponseEntity<ResponseDto> putHate(Integer boardNumber, String userId) {
     try {
 
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
       HateEntity hateEntity = hateRepository.findByUserIdAndBoardNumber(userId, boardNumber);
       if (hateEntity == null) {
         hateEntity = new HateEntity(userId, boardNumber);
@@ -452,6 +456,46 @@ public class BoardServiceImplement implements BoardService {
       return ResponseDto.databaseError();
     }
 
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResponseDto> deleteComment(Integer commentNumber, String userId) {
+    try {
+      
+      CommentEntity commentEntity = commentRepository.findByCommentNumber(commentNumber);
+      if (commentEntity == null) return ResponseDto.noExistComment();
+
+      String commentWriterId = commentEntity.getCommentWriterId();
+      boolean isWriter = commentWriterId.equals(userId);
+      if (!isWriter) return ResponseDto.noPermission();
+
+      commentRepository.delete(commentEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
+  // 조회수 증가
+  @Override
+  public ResponseEntity<ResponseDto> putViewCount(Integer boardNumber) {
+    try {
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      boardEntity.setBoardViewCount(boardEntity.getBoardViewCount() + 1);
+
+      boardRepository.save(boardEntity);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
     return ResponseDto.success(HttpStatus.OK);
   }
 

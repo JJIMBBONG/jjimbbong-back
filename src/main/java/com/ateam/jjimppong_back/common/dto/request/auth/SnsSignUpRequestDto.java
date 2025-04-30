@@ -13,17 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SnsSignUpRequestDto {
-        
-    @NotBlank
-    // 띄어쓰기 불가
-    @Pattern(regexp="^[a-zA-Z0-9]{6,20}$")
-    private String userId;
 
     @NotBlank
     private String userNickname;
 
     @NotBlank
-    // 한글로만 이루어져야한다.
     @Pattern(regexp="^[가-힣]{2,5}$")
     private String name;
 

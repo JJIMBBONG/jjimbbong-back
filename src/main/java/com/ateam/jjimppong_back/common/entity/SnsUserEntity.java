@@ -12,23 +12,20 @@ import lombok.*;
 public class SnsUserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long autoId;
 
     private String snsId;
     private String joinType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)  // 외래 키 설정
-    private UserEntity userEntity;  // UserEntity와의 관계
+    // `userId`를 외래 키로 사용
+    private String userId;
 
-    // 생성자에서 필드 설정
-    public SnsUserEntity(String snsId, String joinType, UserEntity userEntity) {
+    public SnsUserEntity(String snsId, String joinType, String userId) {
         this.snsId = snsId;
         this.joinType = joinType;
-        this.userEntity = userEntity;  // userEntity로 설정
+        this.userId = userId;  // userId만 설정
     }
-
     // 새로운 생성자 추가
     public SnsUserEntity(String snsId, String joinType) {
         this.snsId = snsId;
