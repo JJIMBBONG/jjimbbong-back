@@ -327,6 +327,16 @@ public class AuthServiceImplement implements AuthService{
     
             // SNS 로그인 정보 추가 (snsId, joinType)
             UserEntity userEntity = new UserEntity(dto, userId);
+
+            // 회원가입 시 myPageEntity가 기본값으로 생성
+            MyPageEntity myPageEntity = new MyPageEntity();
+            myPageEntity.setUserId(userId);
+            myPageEntity.setUserNickname(userNickname);
+            myPageEntity.setUserLevel(1);
+            myPageEntity.setUserScore(0);
+            // 양방향 관계 설정
+            userEntity.setMyPageEntity(myPageEntity);
+            myPageEntity.setUserEntity(userEntity);
     
             // 사용자 정보 저장
             userRepository.save(userEntity);

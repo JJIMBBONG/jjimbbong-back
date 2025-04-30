@@ -149,6 +149,14 @@ public class BoardController {
     return response;
   }
 
+  @PutMapping("/board-score/{boardNumber}")
+  public ResponseEntity<ResponseDto> putBoardScore(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.putBoardScore(boardNumber);
+    return response;
+  }
+
   @GetMapping("/write-date")
   public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate(
   ) {

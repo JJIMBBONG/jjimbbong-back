@@ -23,6 +23,18 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Integer>{
   List<BoardEntity> findByUserIdOrderByBoardWriteDateDescBoardNumberDesc(String UserId);
   List<BoardEntity> findByOrderByBoardScoreDesc();
 
+  // boardScore 계산
+  @Query(value = 
+    "SELECT (b.board_view_count + COUNT(DISTINCT g.user_id) + COUNT(c.board_number) - COUNT(DISTINCT h.user_id)) AS boardScore " +
+    "FROM board b " +
+    "LEFT JOIN good g ON b.board_number = g.board_number " +
+    "LEFT JOIN hate h ON b.board_number = h.board_number " +
+    "LEFT JOIN comment c ON b.board_number = c.board_number " +
+    "GROUP BY b.board_number",
+  nativeQuery = true)
+  Integer sumBoardScoreByBoardNumber(Integer boardNumber);
+
+
   // boardScore 합계
   @Query(value = 
     "SELECT COALESCE(SUM(board_score), 0) " +
