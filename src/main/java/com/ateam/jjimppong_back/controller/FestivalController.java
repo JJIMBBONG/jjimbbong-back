@@ -39,7 +39,6 @@ public class FestivalController {
     public List<FestivalDTO> getFestivals(@RequestParam String areaCode, @RequestParam String sigunguCode, @RequestHeader("Authorization") String authHeader) {
 
         String token = authHeader.replace("Bearer ", "");
-
         validateToken(token);
 
         String apiUrl = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
