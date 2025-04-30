@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.ateam.jjimppong_back.common.dto.request.board.PostCommentRequestDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
