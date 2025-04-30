@@ -28,15 +28,13 @@ public class CommentEntity {
   private Integer commentNumber;
   private Integer boardNumber;
   private String commentContent;
-  @Column(name = "user_id")
   private String commentWriterId;
-  @Column(name = "write_date")
   private String commentWriteDate;
   private Integer userLevel;
 
   public CommentEntity(PostCommentRequestDto dto, Integer boardNumber, String userId, Integer userLevel) {
     LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     this.boardNumber = boardNumber;
     this.commentWriterId = userId;
     this.userLevel = userLevel;

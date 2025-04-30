@@ -339,7 +339,7 @@ public class BoardServiceImplement implements BoardService {
 
     try {
 
-        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByWriteDateDesc(boardNumber);
+        List<CommentProjection> projections = commentRepository.findAllByBoardNumberOrderByCommentWriteDateDesc(boardNumber);
         for (CommentProjection p : projections){
           CommentVO vo = new CommentVO(
             p.getCommentNumber(), 
