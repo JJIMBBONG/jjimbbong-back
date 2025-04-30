@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
   
   List<CommentEntity> findByBoardNumberOrderByCommentWriteDateDesc(Integer boardNumber);
+  CommentEntity findByCommentNumber(Integer commentNumber);
 
   @Transactional
   void deleteByBoardNumber(Integer BoardNumber);

@@ -32,6 +32,7 @@ public interface BoardService {
 
   ResponseEntity<? super GetCommentResponseDto> getComment(Integer boardNumber);
   ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String userId);
+  ResponseEntity<ResponseDto> deleteComment(Integer commentNumber, String userId);
 
   ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate();
   ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardViewCount();
