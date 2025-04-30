@@ -141,6 +141,14 @@ public class BoardController {
     return response;
   }
 
+  @PutMapping("/view-count/{boardNumber}")
+  public ResponseEntity<ResponseDto> putViewCount(
+    @PathVariable("boardNumber") Integer boardNumber
+  ) {
+    ResponseEntity<ResponseDto> response = boardService.putViewCount(boardNumber);
+    return response;
+  }
+
   @GetMapping("/write-date")
   public ResponseEntity<? super GetFilteredBoardResponseDto> getFilteredBoardWriteDate(
   ) {

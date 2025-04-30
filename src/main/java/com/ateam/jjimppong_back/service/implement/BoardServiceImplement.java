@@ -480,6 +480,26 @@ public class BoardServiceImplement implements BoardService {
     return ResponseDto.success(HttpStatus.OK);
   }
 
+  // 조회수 증가
+  @Override
+  public ResponseEntity<ResponseDto> putViewCount(Integer boardNumber) {
+    try {
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      boardEntity.setBoardViewCount(boardEntity.getBoardViewCount() + 1);
+
+      boardRepository.save(boardEntity);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success(HttpStatus.OK);
+  }
+
   
   
 }
