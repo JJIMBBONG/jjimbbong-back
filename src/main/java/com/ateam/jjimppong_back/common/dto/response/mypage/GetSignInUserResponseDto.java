@@ -19,6 +19,7 @@ public class GetSignInUserResponseDto extends ResponseDto {
   private String detailAddress;
   private String gender;
   private String profileImage;
+  private String joinType;
 
   private GetSignInUserResponseDto(UserEntity userEntity) {
     this.userId = userEntity.getUserId();
@@ -30,6 +31,7 @@ public class GetSignInUserResponseDto extends ResponseDto {
     this.detailAddress = userEntity.getDetailAddress();
     this.gender = userEntity.getGender();
     this.profileImage = userEntity.getProfileImage();
+    this.joinType = userEntity.getJoinType();
   }
 
   public static ResponseEntity<GetSignInUserResponseDto> success (UserEntity userEntity) {

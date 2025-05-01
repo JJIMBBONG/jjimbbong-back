@@ -51,14 +51,14 @@ public class BoardServiceImplement implements BoardService {
 
   @Override
   public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId) {
-      try {
-          UserEntity userEntity = userRepository.findByUserId(userId);
-          String userNickname = userEntity.getUserNickname();
-          Integer userLevel = userEntity.getUserLevel();
-          Integer defaultScore = 60;
+    
+    try {
+
+      UserEntity userEntity = userRepository.findByUserId(userId);
+      String userNickname = userEntity.getUserNickname();
+      Integer userLevel = userEntity.getUserLevel();
 
           BoardEntity boardEntity = new BoardEntity(dto, userId, userNickname, userLevel);
-          boardEntity.setBoardScore(defaultScore);
 
           // ✅ textFileUrl이 DTO에 포함되어 있다면 Entity에도 반영
           boardEntity.setTextFileUrl(dto.getTextFileUrl());
@@ -496,6 +496,31 @@ public class BoardServiceImplement implements BoardService {
     return ResponseDto.success(HttpStatus.OK);
   }
 
-  
+  // board_score 계산
+  @Override
+  public ResponseEntity<ResponseDto> putBoardScore(Integer boardNumber) {
+    
+    try {
+
+      boolean isExistBoard = boardRepository.existsByBoardNumber(boardNumber);
+      if (!isExistBoard) return ResponseDto.noExistBoard();
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      String userId = boardEntity.getUserId();
+      Integer totalScore = boardRepository.sumBoardScoreByBoardNumber(boardNumber);
+      boardEntity.setBoardScore(totalScore);
+
+      boardRepository.save(boardEntity);
+
+      // 게시글 점수가 생기면 마이페이지 테이블에 게시글 계정 점수에 수정//
+      myPageService.updateMyPageInfo(userId);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return ResponseDto.success(HttpStatus.OK);
+  }
   
 }
