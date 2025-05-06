@@ -20,6 +20,7 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignInResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignUpResponseDto;
 import com.ateam.jjimppong_back.common.entity.EmailAuthEntity;
 import com.ateam.jjimppong_back.common.entity.MyPageEntity;
 import com.ateam.jjimppong_back.common.entity.SnsUserEntity;
@@ -297,7 +298,10 @@ public class AuthServiceImplement implements AuthService{
 
     @Override
     @Transactional
-    public ResponseEntity<ResponseDto> snsSignUp(SnsSignUpRequestDto dto) {
+    public ResponseEntity<? super SnsSignUpResponseDto> snsSignUp(SnsSignUpRequestDto dto) {
+
+        String accessToken = null;
+
         try {
             // 이메일 인증 확인
             EmailAuthCheckRequestDto emailAuthCheckRequestDto = new EmailAuthCheckRequestDto();
@@ -344,14 +348,17 @@ public class AuthServiceImplement implements AuthService{
             // SNS 로그인 정보 저장 (userId만 전달)
             SnsUserEntity newSnsUser = new SnsUserEntity(dto.getSnsId(), dto.getJoinType(), userId);
             snsUserRepository.save(newSnsUser);
+
+            accessToken = jwtProvider.create(userId);
     
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();  // DB 오류 응답
         }
     
-        return ResponseDto.success(HttpStatus.CREATED);  // 성공 응답
+        return SnsSignUpResponseDto.success(accessToken);  // 성공 응답
     }
+
     
     // `userId` 생성 메서드
     private String generateUserId(String joinType, String snsId) {

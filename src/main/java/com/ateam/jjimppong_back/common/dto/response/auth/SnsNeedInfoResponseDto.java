@@ -21,6 +21,6 @@ public class SnsNeedInfoResponseDto extends ResponseDto {
     public static ResponseEntity<SnsNeedInfoResponseDto> success(String snsId, String joinType) {
         SnsNeedInfoResponseDto body = new SnsNeedInfoResponseDto(snsId, joinType);
         // BadRequest with SNS_NEED_INFO
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body); 
+        return ResponseEntity.status(HttpStatus.OK).body(body); 
     }
 }

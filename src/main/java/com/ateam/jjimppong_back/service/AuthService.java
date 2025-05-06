@@ -16,6 +16,7 @@ import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.IdSearchResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SignInResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignInResponseDto;
+import com.ateam.jjimppong_back.common.dto.response.auth.SnsSignUpResponseDto;
 
 
 public interface AuthService {
@@ -29,7 +30,7 @@ public interface AuthService {
     ResponseEntity<? super IdSearchResponseDto> idSearch(IdSearchRequestDto dto);
     ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto);
     // ResponseEntity<ResponseDto> snsSignUp(SnsSignUpRequestDto dto, String snsId, String joinType);
-    ResponseEntity<ResponseDto> snsSignUp(SnsSignUpRequestDto dto);
+    ResponseEntity<? super SnsSignUpResponseDto> snsSignUp(SnsSignUpRequestDto dto);
 
     // 와일드 카드형태로 입력
     // super : 본인과 부모타입 사용
