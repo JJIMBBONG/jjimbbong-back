@@ -116,21 +116,6 @@ public class MyPageServiceImplement implements MyPageService {
     return GetMyPageBoardResponseDto.success(boardEntities);
   }
   
-  // @Override
-  // public ResponseEntity<? super GetDetailMyBoardResponseDto> getDetailMyBoard(String userId, Integer boardNumber) {
-  //   BoardEntity boardEntity = null;
-
-  //   try {
-  //     boardEntity = boardRepository.findByBoardNumber(boardNumber);
-  //     if (boardEntity == null) return ResponseDto.noExistBoard();
-  //   } catch (Exception exception) {
-  //     exception.printStackTrace();
-  //     return ResponseDto.databaseError();
-  //   }
-
-  //   return GetDetailMyBoardResponseDto.success(boardEntity);
-  // }
-
   @Override
   public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String userId) {
     UserEntity userEntity = null;

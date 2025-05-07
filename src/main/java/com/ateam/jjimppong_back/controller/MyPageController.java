@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +14,6 @@ import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequest
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PostNicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
-import com.ateam.jjimppong_back.common.dto.response.mypage.GetDetailMyBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyLevelResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetMyPageBoardResponseDto;
 import com.ateam.jjimppong_back.common.dto.response.mypage.GetSignInUserResponseDto;
@@ -72,15 +70,6 @@ public class MyPageController {
     ResponseEntity<? super GetMyPageBoardResponseDto> response = myPageService.getMyPageBoard(userId);
     return response;
   }
-
-  // @GetMapping("/my-main/{boardNumber}")
-  // public ResponseEntity<? super GetDetailMyBoardResponseDto> getDetailMyBoard(
-  //   @AuthenticationPrincipal String userId,
-  //   @PathVariable("boardNumber") Integer boardNumber
-  // ) {
-  //   ResponseEntity<? super GetDetailMyBoardResponseDto> response = myPageService.getDetailMyBoard(userId, boardNumber);
-  //   return response;
-  // }
 
   @GetMapping("/my-main/user-info")
   public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
