@@ -3,6 +3,7 @@ package com.ateam.jjimppong_back.service;
 import org.springframework.http.ResponseEntity;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSNSSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PostNicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -21,4 +22,5 @@ public interface MyPageService {
 
   ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String userId);
   ResponseEntity<ResponseDto> patchSignInUser(PatchSignInUserRequestDto dto, String userId);
+  ResponseEntity<ResponseDto> patchSNSSignInUser(PatchSNSSignInUserRequestDto dto, String userId);
 }

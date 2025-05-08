@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ateam.jjimppong_back.common.dto.request.mypage.PasswordReCheckRequestDto;
+import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSNSSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PatchSignInUserRequestDto;
 import com.ateam.jjimppong_back.common.dto.request.mypage.PostNicknameCheckRequestDto;
 import com.ateam.jjimppong_back.common.dto.response.ResponseDto;
@@ -85,6 +86,16 @@ public class MyPageController {
     @AuthenticationPrincipal String userId
   ) {
     ResponseEntity<ResponseDto> response = myPageService.patchSignInUser(requestBody, userId);
+    return response;
+  }
+
+  // sns 사용자 정보 수정 - sns 로그인 하면 password 값이 null 이기 때문에 patchSNSSignInUser 추가
+  @PatchMapping("/my-main/sns-user-info")
+  public ResponseEntity<ResponseDto> patchSNSSignInUser(
+    @RequestBody @Valid PatchSNSSignInUserRequestDto requestBody,
+    @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<ResponseDto> response = myPageService.patchSNSSignInUser(requestBody, userId);
     return response;
   }
   
