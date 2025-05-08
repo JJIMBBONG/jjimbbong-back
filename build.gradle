@@ -49,8 +49,3 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
-tasks.named('test') {
-	useJUnitPlatform()
-	jvmArgs += "-javaagent:${configurations.testRuntimeOnly.files.find { it.name.startsWith("byte-buddy-agent") }}"
-}
