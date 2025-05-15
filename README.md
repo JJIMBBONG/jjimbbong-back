@@ -28,7 +28,7 @@
 - Spring OAuth2 Client
 - Spring Data JPA
 - MySQL
-- Swagger
+- Swagger (Springdoc OpenAPI)
 - Lombok
 - Gradle
 - Naver Maps API
