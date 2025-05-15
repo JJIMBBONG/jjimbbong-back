@@ -21,9 +21,10 @@
 - 지도 페이지 지역별 축제, 팝업스토어, 맛집 리스트 정보 제공
 
 ## 🖥️ 기술 스택
-- Java 22
+- Java 21
 - Spring Boot
 - Spring Security
+- Spring Validation
 - JWT (JSON Web Token)
 - Spring OAuth2 Client
 - Spring Data JPA
